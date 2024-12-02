@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Especialidades {
+  id                   String                 @id @default(uuid())
+  designacao           String?
+  Consultas            Consultas[]
+  MedicoEspecialidades MedicoEspecialidades[]
+
+  @@map("especialidades")
+}
+
+model Medicos {
+  id             String                 @id @default(uuid())
+  nome           String?
+  contacto       String?
+  morada         String?
+  numero_ordem   String?
+  especialidades MedicoEspecialidades[]
+  consultas      Consultas[]
+
+  @@map("medicos")
+}
+
+model Pacientes {
+  id        String      @id @default(uuid())
+  nome      String?
+  contacto  String?
+  morada    String?
+  consultas Consultas[]
+
+  @@map("pacientes")
+}
+
+model Consultas {
+  id_medico        String
+  numero_consulta  Int
+  id_especialidade String
+  id_paciente      String
+  data_inicio      DateTime?
+  data_fim         DateTime?
+  medico           Medicos        @relation(fields: [id_medico], references: [id])
+  paciente         Pacientes      @relation(fields: [id_paciente], references: [id])
+  especialidade    Especialidades @relation(fields: [id_especialidade], references: [id])
+  receita          Receita[]
+
+  @@id([id_medico, numero_consulta])
+  @@map("consultas")
+}
+
+model Receita {
+  id_consulta_medico String
+  numero_consulta    Int
+  id_farmaco         String
+  consulta           Consultas @relation(fields: [id_consulta_medico, numero_consulta], references: [id_medico, numero_consulta])
+  farmaco            Farmacos  @relation(fields: [id_farmaco], references: [id])
+
+  @@id([id_consulta_medico, numero_consulta, id_farmaco])
+  @@map("receita")
+}
+
+model Farmacos {
+  id      String    @id @default(uuid())
+  nome    String?
+  Receita Receita[]
+
+  @@map("farmacos")
+}
+
+model MedicoEspecialidades {
+  id_medico        String
+  id_especialidade String
+  medico           Medicos        @relation(fields: [id_medico], references: [id])
+  especialidade    Especialidades @relation(fields: [id_especialidade], references: [id])
+
+  @@id([id_medico, id_especialidade])
+  @@map("medico_especialidades")
+}
