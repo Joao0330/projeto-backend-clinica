@@ -4,12 +4,12 @@ export const createMedicoSchema = z.object({
 	nome: z.string().min(1),
 	contacto: z.string().min(9).optional(),
 	morada: z.string().optional(),
-	numero_ordem: z.string().min(4),
+	numero_ordem: z.string().min(1),
 });
 
 export const updateMedicoSchema = z.object({
 	nome: z.string().min(1).optional(),
 	contacto: z.string().min(9).optional(),
 	morada: z.string().optional(),
-	numero_ordem: z.string().min(4).optional(),
+	numero_ordem: z.string().min(1).optional(),
 });
