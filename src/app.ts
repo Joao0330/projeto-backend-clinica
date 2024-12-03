@@ -1,8 +1,9 @@
 import fastifyJwt from '@fastify/jwt';
 import fastify from 'fastify';
 import { env } from './env';
-import medicosRoutes from './modules/medicos/medicos.routes';
+import { medicosRoutes } from './modules/medicos/medicos.routes';
 import { ZodError } from 'zod';
+import { pacientesRoutes } from './modules/pacientes/pacientes.routes';
 
 export const app = fastify();
 
@@ -11,6 +12,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(medicosRoutes);
+app.register(pacientesRoutes);
 
 app.setErrorHandler((error, _, reply) => {
 	if (error instanceof ZodError) {
