@@ -77,6 +77,10 @@ export async function updateConsulta(request: FastifyRequest<{ Params: { id_medi
 
 	try {
 		await verifySchedule(data_inicio, data_fim, id_medico, reply);
+		
+		if (reply.sent) {
+			return;
+		}
 
 		const consulta = await prisma.consultas.update({
 			where: {
@@ -90,7 +94,7 @@ export async function updateConsulta(request: FastifyRequest<{ Params: { id_medi
 
 		reply.send(consulta);
 	} catch (err) {
-		console.error('Error updating consulta:', err); // Log the error
+		console.error('Error updating consulta:', err);
 		reply.status(422).send({ err: 'Erro ao atualizar consulta' });
 	}
 }

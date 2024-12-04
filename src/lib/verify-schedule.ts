@@ -1,10 +1,11 @@
-import dayjs from "dayjs";
-import { prisma } from "./prisma";
-import { FastifyReply } from "fastify";
+import dayjs from 'dayjs';
+import { prisma } from './prisma';
+import { FastifyReply } from 'fastify';
 
 export async function verifySchedule(data_inicio: string, data_fim: string, id_medico: string, reply: FastifyReply) {
 	if (!dayjs(data_inicio).isValid() || !dayjs(data_fim).isValid()) {
-		return reply.status(400).send({ error: 'Datas inválidas.' });
+		reply.status(400).send({ error: 'Datas inválidas.' });
+		return;
 	}
 
 	// Verifica se a o horário requisitado está livre para o médico
@@ -17,6 +18,7 @@ export async function verifySchedule(data_inicio: string, data_fim: string, id_m
 	});
 
 	if (consultaExistente) {
-		return reply.status(400).send({ error: 'Horário indisponível para o médico.' });
+		reply.status(400).send({ error: 'Horário indisponível para o médico.' });
+		return;
 	}
 }
