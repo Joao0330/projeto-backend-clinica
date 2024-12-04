@@ -46,7 +46,7 @@ model Pacientes {
 
 model Consultas {
   id_medico        String
-  numero_consulta  Int
+  numero_consulta  String   @default(uuid()) 
   id_especialidade String
   id_paciente      String
   data_inicio      DateTime?
@@ -62,7 +62,7 @@ model Consultas {
 
 model Receita {
   id_consulta_medico String
-  numero_consulta    Int
+  numero_consulta    String
   id_farmaco         String
   consulta           Consultas @relation(fields: [id_consulta_medico, numero_consulta], references: [id_medico, numero_consulta])
   farmaco            Farmacos  @relation(fields: [id_farmaco], references: [id])

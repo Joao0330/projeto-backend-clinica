@@ -47,12 +47,12 @@ export async function createMedico(request: FastifyRequest, reply: FastifyReply)
 
 export async function updateMedico(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
 	const { id } = request.params;
-	const medicoData = updateMedicoSchema.parse(request.body);
+	const updatedMedico = updateMedicoSchema.parse(request.body);
 
 	try {
 		const medico = await prisma.medicos.update({
 			where: { id },
-			data: medicoData,
+			data: updatedMedico,
 		});
 
 		reply.send(medico);
