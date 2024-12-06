@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { createPacienteSchema, updatePacienteSchema } from './pacientes.schema';
 import { prisma } from '../../lib/prisma';
+import { verifyContact } from '../../lib/verify-contact';
 
 export async function getAllPacientes(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -35,6 +36,10 @@ export async function createPaciente(request: FastifyRequest, reply: FastifyRepl
 	const pacienteData = createPacienteSchema.parse(request.body);
 
 	try {
+		if (pacienteData.contacto !== undefined && (await verifyContact(pacienteData.contacto, "pacientes"))) {
+			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
+		}
+
 		const paciente = await prisma.pacientes.create({
 			data: pacienteData,
 		});
@@ -50,6 +55,10 @@ export async function updatePaciente(request: FastifyRequest<{ Params: { id: str
 	const updatedPaciente = updatePacienteSchema.parse(request.body);
 
 	try {
+		if (updatedPaciente.contacto !== undefined && (await verifyContact(updatedPaciente.contacto, "pacientes"))) {
+			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
+		}
+
 		const paciente = await prisma.pacientes.update({
 			where: { id },
 			data: updatedPaciente,
@@ -64,13 +73,13 @@ export async function updatePaciente(request: FastifyRequest<{ Params: { id: str
 export async function deletePaciente(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
 	const { id } = request.params;
 
-    try {
-        await prisma.pacientes.delete({
-            where: {id}
-        });
+	try {
+		await prisma.pacientes.delete({
+			where: { id },
+		});
 
-        reply.status(204).send();
-    } catch (err) {
-        reply.status(500).send({ err: 'Erro ao apagar paciente' });
-    }
+		reply.status(204).send();
+	} catch (err) {
+		reply.status(500).send({ err: 'Erro ao apagar paciente' });
+	}
 }

@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../lib/prisma';
 import { createEspecialidadeSchema, updateEspecialidadeSchema } from './especialidades.schema';
+import { verifySameEspecialidade } from '../../lib/verify-same-especialidade';
 
 export async function getAllEspecialidades(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -35,6 +36,10 @@ export async function createEspecialidade(request: FastifyRequest, reply: Fastif
 	const { designacao } = createEspecialidadeSchema.parse(request.body);
 
 	try {
+		if (await verifySameEspecialidade(designacao)) {
+			return reply.status(409).send({ err: 'Especialidade ja cadastrada' });
+		}
+
 		const especialidade = await prisma.especialidades.create({
 			data: { designacao },
 		});
@@ -47,12 +52,16 @@ export async function createEspecialidade(request: FastifyRequest, reply: Fastif
 
 export async function updateEspecialidade(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
 	const { id } = request.params;
-	const updatedEspecialidade = updateEspecialidadeSchema.parse(request.body);
+	const { designacao } = updateEspecialidadeSchema.parse(request.body);
 
 	try {
+		if (designacao !== undefined && (await verifySameEspecialidade(designacao))) {
+			return reply.status(409).send({ err: 'Especialidade ja cadastrada' });
+		}
+
 		const especialidade = await prisma.especialidades.update({
 			where: { id },
-			data: updatedEspecialidade,
+			data: { designacao },
 		});
 
 		reply.send(especialidade);

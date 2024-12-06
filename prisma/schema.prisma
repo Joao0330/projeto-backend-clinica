@@ -46,7 +46,7 @@ model Pacientes {
 
 model Consultas {
   id_medico        String
-  numero_consulta  String   @default(uuid()) 
+  id_consulta  String   @default(uuid()) 
   id_especialidade String
   id_paciente      String
   data_inicio      DateTime?
@@ -56,18 +56,18 @@ model Consultas {
   especialidade    Especialidades @relation(fields: [id_especialidade], references: [id])
   receita          Receita[]
 
-  @@id([id_medico, numero_consulta])
+  @@id([id_medico, id_consulta])
   @@map("consultas")
 }
 
 model Receita {
   id_consulta_medico String
-  numero_consulta    String
+  id_consulta    String
   id_farmaco         String
-  consulta           Consultas @relation(fields: [id_consulta_medico, numero_consulta], references: [id_medico, numero_consulta])
+  consulta           Consultas @relation(fields: [id_consulta_medico, id_consulta], references: [id_medico, id_consulta])
   farmaco            Farmacos  @relation(fields: [id_farmaco], references: [id])
 
-  @@id([id_consulta_medico, numero_consulta, id_farmaco])
+  @@id([id_consulta_medico, id_consulta, id_farmaco])
   @@map("receita")
 }
 

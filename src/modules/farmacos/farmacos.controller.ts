@@ -52,12 +52,16 @@ export async function createFarmaco(request: FastifyRequest, reply: FastifyReply
 
 export async function updateFarmaco(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
 	const { id } = request.params;
-	const updatedFarmaco = updateFarmacoSchema.parse(request.body);
+	const { nome } = updateFarmacoSchema.parse(request.body);
 
 	try {
+		if (await verifyFarmacoWithSameName(nome)) {
+			return reply.status(409).send({ err: 'Fármaco com este nome já existe!' });
+		}
+
 		const farmaco = await prisma.farmacos.update({
 			where: { id },
-			data: updatedFarmaco,
+			data: { nome },
 		});
 
 		reply.send(farmaco);

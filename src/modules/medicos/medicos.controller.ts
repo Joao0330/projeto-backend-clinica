@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../lib/prisma';
 import { createMedicoSchema, updateMedicoSchema } from './medicos.schema';
+import { verifyContact } from '../../lib/verify-contact';
+import { verifySameNumeroOrdem } from '../../lib/verify-same-numero_ordem';
 
 export async function getAllMedicos(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -35,6 +37,12 @@ export async function createMedico(request: FastifyRequest, reply: FastifyReply)
 	const medicoData = createMedicoSchema.parse(request.body);
 
 	try {
+		if (medicoData.contacto !== undefined && (await verifyContact(medicoData.contacto, 'medicos'))) {
+			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
+		} else if (medicoData.numero_ordem !== undefined && (await verifySameNumeroOrdem(medicoData.numero_ordem))) {
+			return reply.status(409).send({ err: 'Número de ordem ja cadastrado' });
+		}
+
 		const medico = await prisma.medicos.create({
 			data: medicoData,
 		});
@@ -50,6 +58,12 @@ export async function updateMedico(request: FastifyRequest<{ Params: { id: strin
 	const updatedMedico = updateMedicoSchema.parse(request.body);
 
 	try {
+		if (updatedMedico.contacto !== undefined && (await verifyContact(updatedMedico.contacto, 'medicos'))) {
+			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
+		} else if (updatedMedico.numero_ordem !== undefined && (await verifySameNumeroOrdem(updatedMedico.numero_ordem))) {
+			return reply.status(409).send({ err: 'Número de ordem ja cadastrado' });
+		}
+
 		const medico = await prisma.medicos.update({
 			where: { id },
 			data: updatedMedico,
