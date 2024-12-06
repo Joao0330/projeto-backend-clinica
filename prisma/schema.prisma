@@ -46,9 +46,10 @@ model Pacientes {
 
 model Consultas {
   id_medico        String
-  id_consulta  String   @default(uuid()) 
+  id_consulta      String   @default(uuid()) 
   id_especialidade String
   id_paciente      String
+  numero_consulta Int
   data_inicio      DateTime?
   data_fim         DateTime?
   medico           Medicos        @relation(fields: [id_medico], references: [id])
