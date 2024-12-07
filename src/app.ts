@@ -7,6 +7,7 @@ import { pacientesRoutes } from './modules/pacientes/pacientes.routes';
 import { especialidadesRoutes } from './modules/especialidades/especialidades.routes';
 import { consultasRoutes } from './modules/consultas/consultas.routes';
 import { farmacosRoutes } from './modules/farmacos/farmacos.routes';
+import { receitasRoutes } from './modules/receitas/receitas.routes';
 
 export const app = fastify();
 
@@ -19,6 +20,7 @@ app.register(pacientesRoutes);
 app.register(especialidadesRoutes);
 app.register(consultasRoutes);
 app.register(farmacosRoutes);
+app.register(receitasRoutes);
 
 app.setErrorHandler((error, request, reply) => {
 	if (error instanceof ZodError) {

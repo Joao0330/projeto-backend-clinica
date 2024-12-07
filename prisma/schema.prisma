@@ -62,9 +62,10 @@ model Consultas {
 }
 
 model Receita {
-  id_consulta_medico String
-  id_consulta    String
-  id_farmaco         String
+  id_consulta_medico  String
+  id_consulta         String
+  id_farmaco          String
+  data_receita        DateTime @default(now())
   consulta           Consultas @relation(fields: [id_consulta_medico, id_consulta], references: [id_medico, id_consulta])
   farmaco            Farmacos  @relation(fields: [id_farmaco], references: [id])
 
