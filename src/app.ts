@@ -8,6 +8,7 @@ import { especialidadesRoutes } from './modules/especialidades/especialidades.ro
 import { consultasRoutes } from './modules/consultas/consultas.routes';
 import { farmacosRoutes } from './modules/farmacos/farmacos.routes';
 import { receitasRoutes } from './modules/receitas/receitas.routes';
+import { medicoEspecialidadesRoutes } from './modules/medico-especialidades/medicoEspecialidades.routes';
 
 export const app = fastify();
 
@@ -21,6 +22,7 @@ app.register(especialidadesRoutes);
 app.register(consultasRoutes);
 app.register(farmacosRoutes);
 app.register(receitasRoutes);
+app.register(medicoEspecialidadesRoutes);
 
 app.setErrorHandler((error, request, reply) => {
 	if (error instanceof ZodError) {
