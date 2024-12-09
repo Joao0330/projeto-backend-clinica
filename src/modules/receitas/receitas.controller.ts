@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { createReceitaSchema, deleteReceitaSchema, getReceitaSchema } from './receitas.schema';
+import { createReceitaSchema } from './receitas.schema';
 import { prisma } from '../../lib/prisma';
 import { verifyConsultaExists } from '../../lib/verify-consulta-exists';
 import { verifyFarmacoExists } from '../../lib/verify-farmaco-exists';
@@ -39,8 +39,8 @@ export async function createReceita(request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export async function getReceitaByConsulta(request: FastifyRequest, reply: FastifyReply) {
-	const { id_consulta_medico, id_consulta } = getReceitaSchema.parse(request.params);
+export async function getReceitaByConsulta(request: FastifyRequest<{ Params: { id_consulta_medico: string; id_consulta: string } }>, reply: FastifyReply) {
+	const { id_consulta_medico, id_consulta } = request.params;
 
 	try {
 		const receitas = await prisma.receita.findMany({
@@ -64,8 +64,8 @@ export async function getReceitaByConsulta(request: FastifyRequest, reply: Fasti
 	}
 }
 
-export async function deleteReceita(request: FastifyRequest, reply: FastifyReply) {
-	const { id_consulta_medico, id_consulta, id_farmaco } = deleteReceitaSchema.parse(request.body);
+export async function deleteReceita(request: FastifyRequest<{ Params: { id_consulta_medico: string; id_consulta: string; id_farmaco: string } }>, reply: FastifyReply) {
+	const { id_consulta_medico, id_consulta, id_farmaco } = request.params;
 
 	try {
 		await prisma.receita.delete({

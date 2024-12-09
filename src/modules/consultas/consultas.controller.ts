@@ -3,7 +3,7 @@ import { prisma } from '../../lib/prisma';
 import { createConsultaSchema, updateConsultaSchema } from './consultas.schema';
 import dayjs from 'dayjs';
 import { verifySchedule } from '../../lib/verify-schedule';
-import { verifySameNumeroConsulta } from '../../lib/verify-same-numero-consulta';
+import { createNumeroConsulta } from '../../lib/create-numero-consulta';
 
 export async function getAllConsultas(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -47,21 +47,19 @@ export async function getConsulta(request: FastifyRequest<{ Params: { id_medico:
 }
 
 export async function createConsulta(request: FastifyRequest, reply: FastifyReply) {
-	const { id_medico, id_paciente, id_especialidade, numero_consulta, data_inicio, data_fim } = createConsultaSchema.parse(request.body);
+	const { id_medico, id_paciente, id_especialidade, data_inicio, data_fim } = createConsultaSchema.parse(request.body);
 
 	try {
 		if (await verifySchedule(data_inicio, data_fim, id_medico, reply)) {
 			return reply.status(400).send({ error: 'Horário indisponível para o médico.' });
-		} else if(await verifySameNumeroConsulta(numero_consulta)) {
-			return reply.status(409).send({ err: 'O numero de consulta já existe' });
-		};
+		}
 
 		const consulta = await prisma.consultas.create({
 			data: {
 				id_medico,
 				id_paciente,
 				id_especialidade,
-				numero_consulta,
+				numero_consulta: await createNumeroConsulta(),
 				data_inicio: dayjs(data_inicio).toDate(),
 				data_fim: dayjs(data_fim).toDate(),
 			},
@@ -115,6 +113,7 @@ export async function deleteConsulta(request: FastifyRequest<{ Params: { id_medi
 
 		reply.status(204).send();
 	} catch (err) {
+		console.error(err);
 		reply.status(500).send({ err: 'Erro ao apagar consulta' });
 	}
 }

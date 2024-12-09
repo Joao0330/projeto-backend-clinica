@@ -49,7 +49,7 @@ model Consultas {
   id_consulta      String   @default(uuid()) 
   id_especialidade String
   id_paciente      String
-  numero_consulta Int
+  numero_consulta  Int
   data_inicio      DateTime?
   data_fim         DateTime?
   medico           Medicos        @relation(fields: [id_medico], references: [id])
@@ -66,7 +66,7 @@ model Receita {
   id_consulta         String
   id_farmaco          String
   data_receita        DateTime @default(now())
-  consulta           Consultas @relation(fields: [id_consulta_medico, id_consulta], references: [id_medico, id_consulta])
+  consulta           Consultas @relation(fields: [id_consulta_medico, id_consulta], references: [id_medico, id_consulta], onDelete: Cascade)
   farmaco            Farmacos  @relation(fields: [id_farmaco], references: [id])
 
   @@id([id_consulta_medico, id_consulta, id_farmaco])

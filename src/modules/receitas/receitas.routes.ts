@@ -6,5 +6,5 @@ export async function receitasRoutes(app: FastifyInstance) {
 
 	app.post('/receitas', createReceita);
 
-	app.delete('/receitas', deleteReceita);
+	app.delete('/receitas/:id_consulta_medico/:id_consulta/:id_farmaco', deleteReceita);
 }

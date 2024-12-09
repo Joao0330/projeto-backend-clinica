@@ -6,7 +6,6 @@ export const createConsultaSchema = z
 		id_medico: z.string().uuid(),
 		id_paciente: z.string().uuid(),
 		id_especialidade: z.string().uuid(),
-		numero_consulta: z.number().int().positive(),
 		data_inicio: z.string().refine(date => dayjs(date).isAfter(dayjs()), {
 			message: 'A data de início deve ser no futuro.',
 		}),
