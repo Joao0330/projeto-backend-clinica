@@ -1,18 +1,10 @@
 import { prisma } from './prisma';
 
-export async function createNumeroConsulta(): Promise<any> {
+export async function createNumeroConsulta(id_medico: string): Promise<any> {
 	const existingNumeroConsulta = await prisma.consultas.findFirst({
-		orderBy: {
-			numero_consulta: 'desc',
-		},
-		take: 1,
+		where: { id_medico },
+		orderBy: { numero_consulta: 'desc' },
 	});
 
-	let numeroConsulta;
-
-	if (existingNumeroConsulta) {
-		return (numeroConsulta = existingNumeroConsulta.numero_consulta + 1);
-	} else {
-		return (numeroConsulta = 1);
-	}
+	return existingNumeroConsulta ? existingNumeroConsulta.numero_consulta + 1 : 1;
 }

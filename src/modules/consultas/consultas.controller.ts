@@ -50,16 +50,23 @@ export async function createConsulta(request: FastifyRequest, reply: FastifyRepl
 	const { id_medico, id_paciente, id_especialidade, data_inicio, data_fim } = createConsultaSchema.parse(request.body);
 
 	try {
-		if (await verifySchedule(data_inicio, data_fim, id_medico, reply)) {
-			return reply.status(400).send({ error: 'Horário indisponível para o médico.' });
+		const disponibilidade = await verifySchedule(data_inicio, data_fim, id_medico);
+
+		if (disponibilidade.conflito) {
+			return reply.status(400).send({
+				error: 'Horário indisponível para o médico.',
+				ocupado: disponibilidade.ocupado,
+			});
 		}
+
+		const numeroConsulta = await createNumeroConsulta(id_medico);
 
 		const consulta = await prisma.consultas.create({
 			data: {
 				id_medico,
 				id_paciente,
 				id_especialidade,
-				numero_consulta: await createNumeroConsulta(),
+				numero_consulta: numeroConsulta,
 				data_inicio: dayjs(data_inicio).toDate(),
 				data_fim: dayjs(data_fim).toDate(),
 			},
@@ -80,8 +87,13 @@ export async function updateConsulta(request: FastifyRequest<{ Params: { id_medi
 	}
 
 	try {
-		if (await verifySchedule(data_inicio, data_fim, id_medico, reply)) {
-			return reply.status(400).send({ error: 'Horário indisponível para o médico.' });
+		const disponibilidade = await verifySchedule(data_inicio, data_fim, id_medico);
+
+		if (disponibilidade.conflito) {
+			return reply.status(400).send({
+				error: 'Horário indisponível para o médico.',
+				ocupado: disponibilidade.ocupado,
+			});
 		}
 
 		const consulta = await prisma.consultas.update({

@@ -36,7 +36,7 @@ export const updateConsultaSchema = z
 	.superRefine((fields, ctx) => {
 		const { data_inicio, data_fim } = fields;
 
-		if (dayjs(data_fim).isBefore(dayjs(data_inicio))) {
+		if (data_inicio && data_fim && dayjs(data_fim).isBefore(dayjs(data_inicio))) {
 			ctx.addIssue({
 				path: ['data_fim'],
 				code: 'invalid_date',
