@@ -13,6 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  MEDICO
+  UTENTE
+}
+
+model User {
+  id         String     @id @default(cuid())
+  email      String     @unique
+  password   String
+  role       Role       @default(UTENTE)
+  medico     Medicos?   @relation(fields: [medicoId], references: [id], onDelete: Cascade)
+  medicoId   String?
+  paciente   Pacientes? @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+  pacienteId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user")
+}
+
 model Especialidades {
   id                   String                 @id @default(uuid())
   designacao           String?
@@ -30,6 +52,7 @@ model Medicos {
   numero_ordem   String?
   especialidades MedicoEspecialidades[]
   consultas      Consultas[]
+  User           User[]
 
   @@map("medicos")
 }
@@ -40,13 +63,14 @@ model Pacientes {
   contacto  String?
   morada    String?
   consultas Consultas[]
+  User      User[]
 
   @@map("pacientes")
 }
 
 model Consultas {
   id_medico        String
-  id_consulta      String   @default(uuid()) 
+  id_consulta      String         @default(uuid())
   id_especialidade String
   id_paciente      String
   numero_consulta  Int
@@ -62,10 +86,10 @@ model Consultas {
 }
 
 model Receita {
-  id_consulta_medico  String
-  id_consulta         String
-  id_farmaco          String
-  data_receita        DateTime @default(now())
+  id_consulta_medico String
+  id_consulta        String
+  id_farmaco         String
+  data_receita       DateTime  @default(now())
   consulta           Consultas @relation(fields: [id_consulta_medico, id_consulta], references: [id_medico, id_consulta], onDelete: Cascade)
   farmaco            Farmacos  @relation(fields: [id_farmaco], references: [id])
 

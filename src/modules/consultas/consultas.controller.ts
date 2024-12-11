@@ -5,6 +5,11 @@ import dayjs from 'dayjs';
 import { verifySchedule } from '../../lib/verify-schedule';
 import { createNumeroConsulta } from '../../lib/create-numero-consulta';
 
+export interface ConsultaParams {
+	id_medico: string,
+	id_consulta: string
+}
+
 export async function getAllConsultas(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const consultas = await prisma.consultas.findMany({
@@ -21,7 +26,7 @@ export async function getAllConsultas(request: FastifyRequest, reply: FastifyRep
 	}
 }
 
-export async function getConsulta(request: FastifyRequest<{ Params: { id_medico: string; id_consulta: string } }>, reply: FastifyReply) {
+export async function getConsulta(request: FastifyRequest<{ Params: ConsultaParams }>, reply: FastifyReply) {
 	const { id_medico, id_consulta } = request.params;
 
 	try {
@@ -78,7 +83,7 @@ export async function createConsulta(request: FastifyRequest, reply: FastifyRepl
 	}
 }
 
-export async function updateConsulta(request: FastifyRequest<{ Params: { id_medico: string; id_consulta: string } }>, reply: FastifyReply) {
+export async function updateConsulta(request: FastifyRequest<{ Params: ConsultaParams }>, reply: FastifyReply) {
 	const { id_medico, id_consulta } = request.params;
 	const { data_inicio, data_fim } = updateConsultaSchema.parse(request.body);
 
@@ -113,7 +118,7 @@ export async function updateConsulta(request: FastifyRequest<{ Params: { id_medi
 	}
 }
 
-export async function deleteConsulta(request: FastifyRequest<{ Params: { id_medico: string; id_consulta: string } }>, reply: FastifyReply) {
+export async function deleteConsulta(request: FastifyRequest<{ Params: ConsultaParams }>, reply: FastifyReply) {
 	const { id_medico, id_consulta } = request.params;
 
 	try {

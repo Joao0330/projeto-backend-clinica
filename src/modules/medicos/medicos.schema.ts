@@ -5,6 +5,8 @@ export const createMedicoSchema = z.object({
 	contacto: z.string().min(9).optional(),
 	morada: z.string().optional(),
 	numero_ordem: z.string().min(1),
+	email: z.string().email(),
+	password: z.string().min(6),
 });
 
 export const updateMedicoSchema = z.object({

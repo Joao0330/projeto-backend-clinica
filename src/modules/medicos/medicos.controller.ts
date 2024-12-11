@@ -3,6 +3,12 @@ import { prisma } from '../../lib/prisma';
 import { createMedicoSchema, updateMedicoSchema } from './medicos.schema';
 import { verifyContact } from '../../lib/verify-contact';
 import { verifySameNumeroOrdem } from '../../lib/verify-same-numero_ordem';
+import { verifyUserExists } from '../../lib/verify-user-exists';
+import { hash } from 'bcrypt';
+
+export interface medicoParams {
+	id: string;
+}
 
 export async function getAllMedicos(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -39,12 +45,33 @@ export async function createMedico(request: FastifyRequest, reply: FastifyReply)
 	try {
 		if (medicoData.contacto !== undefined && (await verifyContact(medicoData.contacto, 'medicos'))) {
 			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
-		} else if (medicoData.numero_ordem !== undefined && (await verifySameNumeroOrdem(medicoData.numero_ordem))) {
+		}
+		if (medicoData.numero_ordem !== undefined && (await verifySameNumeroOrdem(medicoData.numero_ordem))) {
 			return reply.status(409).send({ err: 'Número de ordem ja cadastrado' });
 		}
+		if (await verifyUserExists(medicoData.email)) {
+			return reply.status(409).send({ error: 'E-mail já cadastrado' });
+		}
+
+		const hashedPassword = await hash(medicoData.password, 6);
 
 		const medico = await prisma.medicos.create({
-			data: medicoData,
+			data: {
+				nome: medicoData.nome,
+				contacto: medicoData.contacto,
+				morada: medicoData.morada,
+				numero_ordem: medicoData.numero_ordem,
+				User: {
+					create: {
+						email: medicoData.email,
+						password: hashedPassword,
+						role: 'MEDICO',
+					},
+				},
+			},
+			include: {
+				User: true,
+			},
 		});
 
 		reply.status(201).send(medico);
@@ -53,7 +80,7 @@ export async function createMedico(request: FastifyRequest, reply: FastifyReply)
 	}
 }
 
-export async function updateMedico(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function updateMedico(request: FastifyRequest<{ Params: medicoParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 	const updatedMedico = updateMedicoSchema.parse(request.body);
 
@@ -75,7 +102,7 @@ export async function updateMedico(request: FastifyRequest<{ Params: { id: strin
 	}
 }
 
-export async function deleteMedico(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function deleteMedico(request: FastifyRequest<{ Params: medicoParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {
