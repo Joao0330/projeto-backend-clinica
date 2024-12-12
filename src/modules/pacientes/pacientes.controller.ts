@@ -2,6 +2,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { createPacienteSchema, updatePacienteSchema } from './pacientes.schema';
 import { prisma } from '../../lib/prisma';
 import { verifyContact } from '../../lib/verify-contact';
+import { verifyUserExists } from '../../lib/verify-user-exists';
+import { hash } from 'bcrypt';
+
+export interface pacientesParams {
+	id: string;
+}
 
 export async function getAllPacientes(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -12,7 +18,7 @@ export async function getAllPacientes(request: FastifyRequest, reply: FastifyRep
 	}
 }
 
-export async function getPacienteById(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function getPacienteById(request: FastifyRequest<{ Params: pacientesParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {
@@ -36,12 +42,35 @@ export async function createPaciente(request: FastifyRequest, reply: FastifyRepl
 	const pacienteData = createPacienteSchema.parse(request.body);
 
 	try {
-		if (pacienteData.contacto !== undefined && (await verifyContact(pacienteData.contacto, "pacientes"))) {
+		if (await verifyUserExists(pacienteData.email)) {
+			return reply.status(409).send({ error: 'E-mail já cadastrado' });
+		}
+
+		if (pacienteData.contacto !== undefined && (await verifyContact(pacienteData.contacto, 'pacientes'))) {
 			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
 		}
 
+		const hashedPassword = await hash(pacienteData.password, 6);
+
 		const paciente = await prisma.pacientes.create({
-			data: pacienteData,
+			data: {
+				nome: pacienteData.nome,
+				contacto: pacienteData.contacto,
+				morada: pacienteData.morada,
+				User: {
+					create: {
+						nome: pacienteData.nome,
+						contacto: pacienteData.contacto,
+						morada: pacienteData.morada,
+						email: pacienteData.email,
+						password: hashedPassword,
+						role: 'UTENTE',
+					},
+				},
+			},
+			include: {
+				User: true,
+			},
 		});
 
 		reply.status(201).send(paciente);
@@ -50,18 +79,30 @@ export async function createPaciente(request: FastifyRequest, reply: FastifyRepl
 	}
 }
 
-export async function updatePaciente(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function updatePaciente(request: FastifyRequest<{ Params: pacientesParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 	const updatedPaciente = updatePacienteSchema.parse(request.body);
 
 	try {
-		if (updatedPaciente.contacto !== undefined && (await verifyContact(updatedPaciente.contacto, "pacientes"))) {
+		if (updatedPaciente.contacto !== undefined && (await verifyContact(updatedPaciente.contacto, 'pacientes'))) {
 			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
 		}
 
 		const paciente = await prisma.pacientes.update({
 			where: { id },
-			data: updatedPaciente,
+			data: {
+				...updatedPaciente,
+				User: {
+					updateMany: {
+						where: { pacienteId: id },
+						data: {
+							nome: updatedPaciente.nome,
+							contacto: updatedPaciente.contacto,
+							morada: updatedPaciente.morada,
+						},
+					},
+				},
+			},
 		});
 
 		reply.send(paciente);
@@ -70,7 +111,7 @@ export async function updatePaciente(request: FastifyRequest<{ Params: { id: str
 	}
 }
 
-export async function deletePaciente(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function deletePaciente(request: FastifyRequest<{ Params: pacientesParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {

@@ -2,9 +2,9 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { prisma } from '../../lib/prisma';
 import { createMedicoSchema, updateMedicoSchema } from './medicos.schema';
 import { verifyContact } from '../../lib/verify-contact';
-import { verifySameNumeroOrdem } from '../../lib/verify-same-numero_ordem';
 import { verifyUserExists } from '../../lib/verify-user-exists';
 import { hash } from 'bcrypt';
+import { createNumeroEmpregado } from '../../lib/create-numero-empregado';
 
 export interface medicoParams {
 	id: string;
@@ -19,7 +19,7 @@ export async function getAllMedicos(request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export async function getMedicoById(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function getMedicoById(request: FastifyRequest<{ Params: medicoParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {
@@ -39,19 +39,19 @@ export async function getMedicoById(request: FastifyRequest<{ Params: { id: stri
 	}
 }
 
-export async function createMedico(request: FastifyRequest, reply: FastifyReply) {
+export async function createMedico(request: FastifyRequest<{ Params: medicoParams }>, reply: FastifyReply) {
+	const { id } = request.params;
 	const medicoData = createMedicoSchema.parse(request.body);
 
 	try {
 		if (medicoData.contacto !== undefined && (await verifyContact(medicoData.contacto, 'medicos'))) {
 			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
 		}
-		if (medicoData.numero_ordem !== undefined && (await verifySameNumeroOrdem(medicoData.numero_ordem))) {
-			return reply.status(409).send({ err: 'Número de ordem ja cadastrado' });
-		}
 		if (await verifyUserExists(medicoData.email)) {
 			return reply.status(409).send({ error: 'E-mail já cadastrado' });
 		}
+
+		const numeroEmpregado = await createNumeroEmpregado(id);
 
 		const hashedPassword = await hash(medicoData.password, 6);
 
@@ -60,9 +60,12 @@ export async function createMedico(request: FastifyRequest, reply: FastifyReply)
 				nome: medicoData.nome,
 				contacto: medicoData.contacto,
 				morada: medicoData.morada,
-				numero_ordem: medicoData.numero_ordem,
+				numero_empregado: numeroEmpregado,
 				User: {
 					create: {
+						nome: medicoData.nome,
+						contacto: medicoData.contacto,
+						morada: medicoData.morada,
 						email: medicoData.email,
 						password: hashedPassword,
 						role: 'MEDICO',
@@ -87,13 +90,26 @@ export async function updateMedico(request: FastifyRequest<{ Params: medicoParam
 	try {
 		if (updatedMedico.contacto !== undefined && (await verifyContact(updatedMedico.contacto, 'medicos'))) {
 			return reply.status(409).send({ err: 'Contacto ja cadastrado' });
-		} else if (updatedMedico.numero_ordem !== undefined && (await verifySameNumeroOrdem(updatedMedico.numero_ordem))) {
-			return reply.status(409).send({ err: 'Número de ordem ja cadastrado' });
 		}
 
 		const medico = await prisma.medicos.update({
 			where: { id },
-			data: updatedMedico,
+			data: {
+				...updatedMedico,
+				User: {
+					updateMany: {
+						where: { medicoId: id },
+						data: {
+							nome: updatedMedico.nome,
+							contacto: updatedMedico.contacto,
+							morada: updatedMedico.morada,
+						},
+					},
+				},
+			},
+			include: {
+				User: true,
+			},
 		});
 
 		reply.send(medico);

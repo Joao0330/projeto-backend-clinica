@@ -20,17 +20,20 @@ enum Role {
 }
 
 model User {
-  id         String     @id @default(cuid())
-  email      String     @unique
-  password   String
-  role       Role       @default(UTENTE)
-  medico     Medicos?   @relation(fields: [medicoId], references: [id], onDelete: Cascade)
-  medicoId   String?
-  paciente   Pacientes? @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
-  pacienteId String?
+  id          String     @id @default(cuid())
+  nome        String?
+  contacto    String?
+  morada      String?
+  email       String     @unique
+  password    String
+  role        Role       @default(UTENTE)
+  medico      Medicos?   @relation(fields: [medicoId], references: [id], onDelete: Cascade)
+  medicoId    String?
+  paciente    Pacientes? @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+  pacienteId  String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("user")
 }
@@ -45,14 +48,14 @@ model Especialidades {
 }
 
 model Medicos {
-  id             String                 @id @default(uuid())
-  nome           String?
-  contacto       String?
-  morada         String?
-  numero_ordem   String?
-  especialidades MedicoEspecialidades[]
-  consultas      Consultas[]
-  User           User[]
+  id                  String                 @id @default(uuid())
+  nome                String?
+  contacto            String?
+  morada              String?
+  numero_empregado    Int
+  especialidades      MedicoEspecialidades[]
+  consultas           Consultas[]
+  User                User[]
 
   @@map("medicos")
 }
