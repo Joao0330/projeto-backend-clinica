@@ -10,7 +10,7 @@ export async function medicosRoutes(app: FastifyInstance) {
 
 	app.get('/medicos/:id', getMedicoById);
 
-	app.post('/medicos', { onRequest: [verifyUserRole('ADMIN')] }, createMedico);
+	app.post<{ Params: medicoParams }>('/medicos', { onRequest: [verifyUserRole('ADMIN')] }, createMedico);
 
 	app.put<{ Params: medicoParams }>('/medicos/:id', { onRequest: [verifyUserRole('ADMIN')] }, updateMedico);
 
