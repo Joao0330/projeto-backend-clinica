@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const createConsultaSchema = z
 	.object({
 		id_medico: z.string().uuid(),
-		id_paciente: z.string().uuid(),
+		id_paciente: z.string().uuid().optional(),
 		id_especialidade: z.string().uuid(),
 		data_inicio: z.string().refine(date => dayjs(date).isAfter(dayjs()), {
 			message: 'A data de início deve ser no futuro.',

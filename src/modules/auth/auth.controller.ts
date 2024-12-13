@@ -38,6 +38,7 @@ export async function registerUser(request: FastifyRequest, reply: FastifyReply)
 
 		reply.status(201).send({ user });
 	} catch (err) {
+		console.error(err);
 		reply.status(409).send({ err: 'O Email já existe, ou dados inválidos' });
 	}
 }
