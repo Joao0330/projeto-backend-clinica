@@ -3,6 +3,10 @@ import { prisma } from '../../lib/prisma';
 import { createFarmacoSchema, updateFarmacoSchema } from './farmacos.schema';
 import { verifyFarmacoWithSameName } from '../../lib/verify-farmaco-same-name';
 
+export interface farmacosParams {
+	id: string;
+}
+
 export async function getAllFarmacos(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const farmacos = await prisma.farmacos.findMany();
@@ -12,7 +16,7 @@ export async function getAllFarmacos(request: FastifyRequest, reply: FastifyRepl
 	}
 }
 
-export async function getFarmaco(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function getFarmaco(request: FastifyRequest<{ Params: farmacosParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {
@@ -50,7 +54,7 @@ export async function createFarmaco(request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export async function updateFarmaco(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function updateFarmaco(request: FastifyRequest<{ Params: farmacosParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 	const { nome } = updateFarmacoSchema.parse(request.body);
 
@@ -70,7 +74,7 @@ export async function updateFarmaco(request: FastifyRequest<{ Params: { id: stri
 	}
 }
 
-export async function deleteFarmaco(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function deleteFarmaco(request: FastifyRequest<{ Params: farmacosParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {

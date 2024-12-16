@@ -184,7 +184,7 @@ export async function updateConsulta(request: FastifyRequest<{ Params: ConsultaP
 
 		if (disponibilidade.conflito) {
 			return reply.status(400).send({
-				error: 'Horário indisponível para o médico.',
+				err: 'Horário indisponível para o médico.',
 				ocupado: disponibilidade.ocupado,
 			});
 		}
@@ -201,7 +201,6 @@ export async function updateConsulta(request: FastifyRequest<{ Params: ConsultaP
 
 		reply.send(consultaAtualizada);
 	} catch (err) {
-		console.error('Error updating consulta:', err);
 		reply.status(422).send({ err: 'Erro ao atualizar consulta' });
 	}
 }

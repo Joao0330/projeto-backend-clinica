@@ -1,14 +1,18 @@
 import { FastifyInstance } from 'fastify';
-import { createFarmaco, deleteFarmaco, getAllFarmacos, getFarmaco, updateFarmaco } from './farmacos.controller';
+import { createFarmaco, deleteFarmaco, farmacosParams, getAllFarmacos, getFarmaco, updateFarmaco } from './farmacos.controller';
+import { verifyJwt } from '../../http/middlewares/verify-jwt';
+import { verifyUserRole } from '../../http/middlewares/verify-user-role';
 
 export async function farmacosRoutes(app: FastifyInstance) {
-	app.get('/farmacos', getAllFarmacos);
+	app.addHook('onRequest', verifyJwt);
 
-	app.get('/farmacos/:id', getFarmaco);
+	app.get('/farmacos', { onRequest: [verifyUserRole('MEDICO', 'ADMIN')] }, getAllFarmacos);
 
-	app.post('/farmacos', createFarmaco);
+	app.get<{ Params: farmacosParams }>('/farmacos/:id', { onRequest: [verifyUserRole('MEDICO', 'ADMIN')] }, getFarmaco);
 
-	app.put('/farmacos/:id', updateFarmaco);
+	app.post('/farmacos', { onRequest: [verifyUserRole('ADMIN')] }, createFarmaco);
 
-	app.delete('/farmacos/:id', deleteFarmaco);
+	app.put<{ Params: farmacosParams }>('/farmacos/:id', { onRequest: [verifyUserRole('ADMIN')] }, updateFarmaco);
+
+	app.delete<{ Params: farmacosParams }>('/farmacos/:id', { onRequest: [verifyUserRole('ADMIN')] }, deleteFarmaco);
 }

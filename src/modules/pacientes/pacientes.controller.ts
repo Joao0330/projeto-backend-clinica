@@ -18,13 +18,51 @@ export async function getAllPacientes(request: FastifyRequest, reply: FastifyRep
 	}
 }
 
-export async function getPacienteById(request: FastifyRequest<{ Params: pacientesParams }>, reply: FastifyReply) {
-	const { id } = request.params;
+export async function getPacienteInfo(request: FastifyRequest<{ Params: pacientesParams }>, reply: FastifyReply) {
+	const { id: idPaciente } = request.params;
+	const { id: idMedico } = request.user;
 
 	try {
+		const medico = await prisma.user.findUnique({
+			where: { id: idMedico },
+			select: {
+				medicoId: true,
+			},
+		});
+
+		// Verificar se existe uma consulta entre o médico e o paciente
+		const consulta = await prisma.consultas.findFirst({
+			where: {
+				id_paciente: idPaciente,
+				id_medico: medico?.medicoId ?? undefined,
+			},
+		});
+
+		console.log(idPaciente);
+		console.log(idMedico);
+
+		if (!consulta) {
+			return reply.status(403).send({ err: 'Você não tem consulta marcada com este paciente.' });
+		}
+
 		const paciente = await prisma.pacientes.findUnique({
 			where: {
-				id,
+				id: idPaciente,
+			},
+			include: {
+				consultas: {
+					include: {
+						especialidade: true,
+						medico: {
+							select: {
+								nome: true,
+							},
+						},
+					},
+					orderBy: {
+						data_inicio: 'desc',
+					},
+				},
 			},
 		});
 

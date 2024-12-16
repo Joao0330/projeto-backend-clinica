@@ -6,9 +6,9 @@ import { verifyUserRole } from '../../http/middlewares/verify-user-role';
 export async function medicosRoutes(app: FastifyInstance) {
 	app.addHook('onRequest', verifyJwt);
 
-	app.get('/medicos', getAllMedicos);
+	app.get('/medicos', { onRequest: [verifyUserRole('ADMIN')] }, getAllMedicos);
 
-	app.get('/medicos/:id', getMedicoById);
+	app.get<{ Params: medicoParams }>('/medicos/:id', { onRequest: [verifyUserRole('ADMIN')] }, getMedicoById);
 
 	app.post<{ Params: medicoParams }>('/medicos', { onRequest: [verifyUserRole('ADMIN')] }, createMedico);
 
