@@ -6,6 +6,7 @@ import { verifySchedule } from '../../lib/verify-schedule';
 import { createNumeroConsulta } from '../../lib/create-numero-consulta';
 import { verifyMedicoExists } from '../../lib/verify-medico-exists';
 import { verifyPacienteExists } from '../../lib/verify-paciente-exists';
+import { verifyEspecialidadeMedico } from '../../lib/verify-medico-especialidade';
 
 export interface ConsultaParams {
 	id_medico: string;
@@ -118,6 +119,11 @@ export async function createConsulta(request: FastifyRequest, reply: FastifyRepl
 
 		if (!(await verifyMedicoExists(id_medico))) {
 			return reply.status(404).send({ err: 'Médico não encontrado' });
+		}
+
+		const especialidadeValida = await verifyEspecialidadeMedico(id_medico, id_especialidade);
+		if (!especialidadeValida) {
+			return reply.status(400).send({ error: 'A especialidade informada não pertence ao médico selecionado.' });
 		}
 
 		const disponibilidade = await verifySchedule(data_inicio, data_fim, id_medico);
