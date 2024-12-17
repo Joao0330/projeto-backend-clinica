@@ -1,14 +1,18 @@
-import { FastifyInstance } from "fastify";
-import { createEspecialidade, deleteEspecialidade, getAllEspecialidades, getEspecialidade, updateEspecialidade } from "./especialidades.controller";
+import { FastifyInstance } from 'fastify';
+import { createEspecialidade, deleteEspecialidade, especialidadesParams, getAllEspecialidades, getEspecialidade, updateEspecialidade } from './especialidades.controller';
+import { verifyJwt } from '../../http/middlewares/verify-jwt';
+import { verifyUserRole } from '../../http/middlewares/verify-user-role';
 
 export async function especialidadesRoutes(app: FastifyInstance) {
-    app.get('/especialidades', getAllEspecialidades);
+	app.addHook('onRequest', verifyJwt);
 
-    app.get("/especialidades/:id", getEspecialidade);
+	app.get('/especialidades', { onRequest: [verifyUserRole('ADMIN', 'MEDICO')] }, getAllEspecialidades);
 
-    app.post("/especialidades", createEspecialidade);
+	app.get<{ Params: especialidadesParams }>('/especialidades/:id', { onRequest: [verifyUserRole('ADMIN', 'MEDICO')] }, getEspecialidade);
 
-    app.put("/especialidades/:id", updateEspecialidade);
+	app.post('/especialidades', { onRequest: [verifyUserRole('ADMIN')] }, createEspecialidade);
 
-    app.delete("/especialidades/:id", deleteEspecialidade);
+	app.put<{ Params: especialidadesParams }>('/especialidades/:id', { onRequest: [verifyUserRole('ADMIN')] }, updateEspecialidade);
+
+	app.delete<{ Params: especialidadesParams }>('/especialidades/:id', { onRequest: [verifyUserRole('ADMIN')] }, deleteEspecialidade);
 }

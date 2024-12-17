@@ -5,6 +5,12 @@ import { verifyConsultaExists } from '../../lib/verify-consulta-exists';
 import { verifyFarmacoExists } from '../../lib/verify-farmaco-exists';
 import { verifyFarmacoIsPrescripted } from '../../lib/verify-farmaco-is-prescripted';
 
+export interface receitasParams{
+	id_consulta_medico: string;
+	id_consulta: string;
+	id_farmaco: string;
+}
+
 export async function createReceita(request: FastifyRequest, reply: FastifyReply) {
 	const { id_consulta_medico, id_consulta, id_farmaco } = createReceitaSchema.parse(request.body);
 
@@ -39,7 +45,7 @@ export async function createReceita(request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export async function getReceitaByConsulta(request: FastifyRequest<{ Params: { id_consulta_medico: string; id_consulta: string } }>, reply: FastifyReply) {
+export async function getReceitaByConsulta(request: FastifyRequest<{ Params: receitasParams }>, reply: FastifyReply) {
 	const { id_consulta_medico, id_consulta } = request.params;
 
 	try {
@@ -64,7 +70,7 @@ export async function getReceitaByConsulta(request: FastifyRequest<{ Params: { i
 	}
 }
 
-export async function deleteReceita(request: FastifyRequest<{ Params: { id_consulta_medico: string; id_consulta: string; id_farmaco: string } }>, reply: FastifyReply) {
+export async function deleteReceita(request: FastifyRequest<{ Params: receitasParams }>, reply: FastifyReply) {
 	const { id_consulta_medico, id_consulta, id_farmaco } = request.params;
 
 	try {

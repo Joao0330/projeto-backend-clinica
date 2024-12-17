@@ -1,10 +1,14 @@
 import { FastifyInstance } from 'fastify';
-import { createReceita, deleteReceita, getReceitaByConsulta } from './receitas.controller';
+import { createReceita, deleteReceita, getReceitaByConsulta, receitasParams } from './receitas.controller';
+import { verifyJwt } from '../../http/middlewares/verify-jwt';
+import { verifyUserRole } from '../../http/middlewares/verify-user-role';
 
 export async function receitasRoutes(app: FastifyInstance) {
-	app.get('/receitas/:id_consulta_medico/:id_consulta', getReceitaByConsulta);
+	app.addHook('onRequest', verifyJwt);
 
-	app.post('/receitas', createReceita);
+	app.get<{ Params: receitasParams }>('/receitas/:id_consulta_medico/:id_consulta', { onRequest: [verifyUserRole('MEDICO')] }, getReceitaByConsulta);
 
-	app.delete('/receitas/:id_consulta_medico/:id_consulta/:id_farmaco', deleteReceita);
+	app.post('/receitas', { onRequest: [verifyUserRole('MEDICO')] }, createReceita);
+
+	app.delete<{ Params: receitasParams }>('/receitas/:id_consulta_medico/:id_consulta/:id_farmaco', { onRequest: [verifyUserRole('MEDICO', 'ADMIN')] }, deleteReceita);
 }

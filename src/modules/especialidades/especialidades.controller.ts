@@ -3,6 +3,10 @@ import { prisma } from '../../lib/prisma';
 import { createEspecialidadeSchema, updateEspecialidadeSchema } from './especialidades.schema';
 import { verifySameEspecialidade } from '../../lib/verify-same-especialidade';
 
+export interface especialidadesParams {
+	id: string;
+}
+
 export async function getAllEspecialidades(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const especialidades = await prisma.especialidades.findMany();
@@ -12,7 +16,7 @@ export async function getAllEspecialidades(request: FastifyRequest, reply: Fasti
 	}
 }
 
-export async function getEspecialidade(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function getEspecialidade(request: FastifyRequest<{ Params: especialidadesParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {
@@ -50,7 +54,7 @@ export async function createEspecialidade(request: FastifyRequest, reply: Fastif
 	}
 }
 
-export async function updateEspecialidade(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function updateEspecialidade(request: FastifyRequest<{ Params: especialidadesParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 	const { designacao } = updateEspecialidadeSchema.parse(request.body);
 
@@ -70,7 +74,7 @@ export async function updateEspecialidade(request: FastifyRequest<{ Params: { id
 	}
 }
 
-export async function deleteEspecialidade(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function deleteEspecialidade(request: FastifyRequest<{ Params: especialidadesParams }>, reply: FastifyReply) {
 	const { id } = request.params;
 
 	try {

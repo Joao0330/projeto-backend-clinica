@@ -1,10 +1,14 @@
 import { FastifyInstance } from 'fastify';
-import { createMedicoEspecialidade, deleteMedicoEspecialidade, getEspecialidadesByMedico } from './medicoEspecialidades.controller';
+import { createMedicoEspecialidade, deleteMedicoEspecialidade, getEspecialidadesByMedico, medicoEspecialidadesParams } from './medicoEspecialidades.controller';
+import { verifyJwt } from '../../http/middlewares/verify-jwt';
+import { verifyUserRole } from '../../http/middlewares/verify-user-role';
 
 export async function medicoEspecialidadesRoutes(app: FastifyInstance) {
-	app.get('/medicos-especialidades/:id_medico', getEspecialidadesByMedico);
+	app.addHook('onRequest', verifyJwt);
 
-	app.post('/medicos-especialidades', createMedicoEspecialidade);
+	app.get<{ Params: medicoEspecialidadesParams }>('/medicos-especialidades/:id_medico', { onRequest: [verifyUserRole('ADMIN')] }, getEspecialidadesByMedico);
 
-	app.delete('/medicos-especialidades/:id_medico/:id_especialidade', deleteMedicoEspecialidade);
+	app.post('/medicos-especialidades', { onRequest: [verifyUserRole('ADMIN')] }, createMedicoEspecialidade);
+
+	app.delete<{ Params: medicoEspecialidadesParams }>('/medicos-especialidades/:id_medico/:id_especialidade', { onRequest: [verifyUserRole('ADMIN')] }, deleteMedicoEspecialidade);
 }

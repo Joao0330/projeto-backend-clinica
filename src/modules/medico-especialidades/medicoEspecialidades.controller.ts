@@ -5,6 +5,11 @@ import { verifyEspecialidadeIsAssociated } from '../../lib/verify-especialidade-
 import { verifyMedicoExists } from '../../lib/verify-medico-exists';
 import { verifyEspecialidadeExists } from '../../lib/verify-especialidade-exists';
 
+export interface medicoEspecialidadesParams {
+	id_medico: string;
+	id_especialidade: string;
+}
+
 export async function createMedicoEspecialidade(request: FastifyRequest, reply: FastifyReply) {
 	const { id_medico, id_especialidade } = createMedicoEspecialidadesSchema.parse(request.body);
 
@@ -37,7 +42,7 @@ export async function createMedicoEspecialidade(request: FastifyRequest, reply: 
 	}
 }
 
-export async function getEspecialidadesByMedico(request: FastifyRequest<{ Params: { id_medico: string } }>, reply: FastifyReply) {
+export async function getEspecialidadesByMedico(request: FastifyRequest<{ Params: medicoEspecialidadesParams }>, reply: FastifyReply) {
 	const { id_medico } = request.params;
 
 	try {
@@ -55,7 +60,7 @@ export async function getEspecialidadesByMedico(request: FastifyRequest<{ Params
 		});
 
 		if (medicoEspecialidades.length === 0) {
-			return reply.status(404).send({ error: 'Nenhuma especialidade encontrada para este médico' });
+			return reply.status(404).send({ err: 'Nenhuma especialidade encontrada para este médico' });
 		}
 
 		reply.status(200).send(medicoEspecialidades);
@@ -64,7 +69,7 @@ export async function getEspecialidadesByMedico(request: FastifyRequest<{ Params
 	}
 }
 
-export async function deleteMedicoEspecialidade(request: FastifyRequest<{ Params: { id_medico: string; id_especialidade: string } }>, reply: FastifyReply) {
+export async function deleteMedicoEspecialidade(request: FastifyRequest<{ Params: medicoEspecialidadesParams }>, reply: FastifyReply) {
 	const { id_medico, id_especialidade } = request.params;
 
 	try {
