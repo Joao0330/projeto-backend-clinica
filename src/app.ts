@@ -1,15 +1,15 @@
 import fastifyJwt from '@fastify/jwt';
 import fastify from 'fastify';
 import { env } from './env';
-import { medicosRoutes } from './modules/medicos/medicos.routes';
+import { medicosRoutes } from './http/controllers/medicos/routes';
 import { ZodError } from 'zod';
-import { pacientesRoutes } from './modules/pacientes/pacientes.routes';
-import { especialidadesRoutes } from './modules/especialidades/especialidades.routes';
-import { consultasRoutes } from './modules/consultas/consultas.routes';
-import { farmacosRoutes } from './modules/farmacos/farmacos.routes';
-import { receitasRoutes } from './modules/receitas/receitas.routes';
-import { medicoEspecialidadesRoutes } from './modules/medico-especialidades/medicoEspecialidades.routes';
-import { authRoutes } from './modules/auth/auth.routes';
+import { pacientesRoutes } from './http/controllers/pacientes/routes';
+import { especialidadesRoutes } from './http/controllers/especialidades/routes';
+import { consultasRoutes } from './http/controllers/consultas/routes';
+import { farmacosRoutes } from './http/controllers/farmacos/routes';
+import { receitasRoutes } from './http/controllers/receitas/routes';
+import { medicoEspecialidadesRoutes } from './http/controllers/medico-especialidades/routes';
+import { userRoutes } from './http/controllers/users/routes';
 
 export const app = fastify();
 
@@ -24,7 +24,7 @@ app.register(consultasRoutes);
 app.register(farmacosRoutes);
 app.register(receitasRoutes);
 app.register(medicoEspecialidadesRoutes);
-app.register(authRoutes);
+app.register(userRoutes);
 
 app.setErrorHandler((error, request, reply) => {
 	if (error instanceof ZodError) {
