@@ -1,8 +1,7 @@
-// test/unit/controllers/users/registerUser.test.ts
-import { describe, it, vi, expect } from 'vitest';
-import { registerUser } from '../../src/http/controllers/users/register';
-import { prisma } from '../../src/lib/prisma';
 import { hash } from 'bcrypt';
+import { describe, expect, it, vi } from 'vitest';
+import { create } from '../../src/http/controllers/pacientes/create';
+import { prisma } from '../../src/lib/prisma';
 import { verifyUserExists } from '../../src/lib/verify-user-exists';
 import { verifyContact } from '../../src/lib/verify-contact';
 import { randomUUID } from 'crypto';
@@ -13,7 +12,7 @@ vi.mock('bcrypt', () => ({
 
 vi.mock('../../src/lib/prisma', () => ({
 	prisma: {
-		user: {
+		pacientes: {
 			create: vi.fn(),
 		},
 	},
@@ -27,7 +26,7 @@ vi.mock('../../src/lib/verify-contact', () => ({
 	verifyContact: vi.fn(),
 }));
 
-describe('registerUser', () => {
+describe('CreatePaciente', () => {
 	const mockRequest = {
 		body: {
 			nome: 'test',
@@ -43,44 +42,40 @@ describe('registerUser', () => {
 		send: vi.fn(),
 	};
 
-	it('should register a new user', async () => {
+	it('should create a new paciente', async () => {
 		vi.mocked(verifyUserExists).mockResolvedValue(false);
 		vi.mocked(verifyContact).mockResolvedValue(false);
 		vi.mocked(hash);
-		vi.mocked(prisma.user.create).mockResolvedValue({
+		vi.mocked(prisma.pacientes.create).mockResolvedValue({
 			id: randomUUID(),
 			nome: mockRequest.body.nome,
-			email: mockRequest.body.email,
-			password: 'hashed_password',
 			contacto: mockRequest.body.contacto,
 			morada: mockRequest.body.morada,
-			pacienteId: '1',
-			medicoId: null,
-			role: 'UTENTE',
-			createdAt: new Date(),
-			updatedAt: new Date(),
 		});
 
-		await registerUser(mockRequest as any, mockReply as any);
+		await create(mockRequest as any, mockReply as any);
 
 		expect(verifyUserExists).toHaveBeenCalledWith('test@example.com');
 		expect(verifyContact).toHaveBeenCalledWith('123456789', 'pacientes');
 		expect(hash).toHaveBeenCalledWith('123456', 6);
-		expect(prisma.user.create).toHaveBeenCalledWith({
+		expect(prisma.pacientes.create).toHaveBeenCalledWith({
 			data: {
 				nome: mockRequest.body.nome,
-				email: mockRequest.body.email,
-				password: 'hashed_password',
-				paciente: {
+				contacto: mockRequest.body.contacto,
+				morada: mockRequest.body.morada,
+				User: {
 					create: {
 						nome: mockRequest.body.nome,
 						contacto: mockRequest.body.contacto,
 						morada: mockRequest.body.morada,
+						email: mockRequest.body.email,
+						password: 'hashed_password',
+						role: 'UTENTE',
 					},
 				},
 			},
 			include: {
-				paciente: true,
+				User: true,
 			},
 		});
 		expect(mockReply.status).toHaveBeenCalledWith(201);
@@ -89,7 +84,7 @@ describe('registerUser', () => {
 	it('should return a 409 error if the email is already registered', async () => {
 		vi.mocked(verifyUserExists).mockResolvedValue(true);
 
-		await registerUser(mockRequest as any, mockReply as any);
+		await create(mockRequest as any, mockReply as any);
 
 		expect(verifyUserExists).toHaveBeenCalledWith('test@example.com');
 		expect(mockReply.status).toHaveBeenCalledWith(409);
@@ -100,7 +95,7 @@ describe('registerUser', () => {
 		vi.mocked(verifyUserExists).mockResolvedValue(false);
 		vi.mocked(verifyContact).mockResolvedValue(true);
 
-		await registerUser(mockRequest as any, mockReply as any);
+		await create(mockRequest as any, mockReply as any);
 
 		expect(verifyContact).toHaveBeenCalledWith('123456789', 'pacientes');
 		expect(mockReply.status).toHaveBeenCalledWith(409);
