@@ -9,7 +9,7 @@ export async function searchOne(request: FastifyRequest<{ Params: medicoParams }
 		const medico = await prisma.medicos.findUnique({
 			where: {
 				id,
-			},
+			},  
 		});
 
 		if (!medico) {

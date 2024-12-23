@@ -9,7 +9,7 @@ vi.mock('../../src/lib/prisma', () => ({
 		},
 	},
 }));
-
+  
 describe('searchMany', () => {
 	const mockRequest = {};
 
