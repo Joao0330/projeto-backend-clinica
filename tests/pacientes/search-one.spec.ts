@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import { searchOne } from '../../src/http/controllers/pacientes/search-one';
 import { prisma } from '../../src/lib/prisma';
+import { randomUUID } from 'crypto';
+import { request } from 'http';
 
 vi.mock('../../src/lib/prisma', () => ({
 	prisma: {
@@ -18,8 +20,8 @@ vi.mock('../../src/lib/prisma', () => ({
 
 describe('searchOne', () => {
 	const mockRequest = {
-		params: { id: '1' },
-		user: { id: '1' },
+		params: { id: randomUUID() },
+		user: { id: randomUUID() },
 	};
 
 	const mockReply = {
@@ -38,7 +40,7 @@ describe('searchOne', () => {
 			data_fim: new Date(),
 		});
 		vi.mocked(prisma.pacientes.findUnique).mockResolvedValue({
-			id: '1',
+			id: mockRequest.params.id,
 			nome: 'Paciente 1',
 			contacto: null,
 			morada: null,
@@ -47,7 +49,7 @@ describe('searchOne', () => {
 		await searchOne(mockRequest as any, mockReply as any);
 
 		expect(mockReply.send).toHaveBeenCalledWith({
-			id: '1',
+			id: mockRequest.params.id,
 			nome: 'Paciente 1',
 			contacto: null,
 			morada: null,

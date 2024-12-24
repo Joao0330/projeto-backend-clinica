@@ -33,7 +33,7 @@ vi.mock('../../src/lib/create-numero-empregado', () => ({
 
 describe('createMedico', () => {
 	const mockRequest = {
-		params: { id: '1' },
+		params: { id: "1" },
 		body: {
 			nome: 'test',
 			email: 'test@example.com',
@@ -54,7 +54,7 @@ describe('createMedico', () => {
 		vi.mocked(createNumeroEmpregado).mockResolvedValue(1);
 		vi.mocked(hash);
 		vi.mocked(prisma.medicos.create).mockResolvedValue({
-			id: randomUUID(),
+			id: mockRequest.params.id,
 			nome: mockRequest.body.nome,
 			contacto: mockRequest.body.contacto,
 			morada: mockRequest.body.morada,
@@ -63,10 +63,10 @@ describe('createMedico', () => {
 
 		await create(mockRequest as any, mockReply as any);
 
-		expect(verifyUserExists).toHaveBeenCalledWith('test@example.com');
-		expect(verifyContact).toHaveBeenCalledWith('123456789', 'medicos');
+		expect(verifyUserExists).toHaveBeenCalledWith(mockRequest.body.email);
+		expect(verifyContact).toHaveBeenCalledWith(mockRequest.body.contacto, 'medicos');
 		expect(createNumeroEmpregado).toHaveBeenCalledWith('1');
-		expect(hash).toHaveBeenCalledWith('123456', 6);
+		expect(hash).toHaveBeenCalledWith(mockRequest.body.password, 6);
 		expect(prisma.medicos.create).toHaveBeenCalledWith({
 			data: {
 				nome: mockRequest.body.nome,
@@ -96,7 +96,7 @@ describe('createMedico', () => {
 
 		await create(mockRequest as any, mockReply as any);
 
-		expect(verifyUserExists).toHaveBeenCalledWith('test@example.com');
+		expect(verifyUserExists).toHaveBeenCalledWith(mockRequest.body.email);
 		expect(mockReply.status).toHaveBeenCalledWith(409);
 		expect(mockReply.send).toHaveBeenCalledWith({ error: 'E-mail já cadastrado' });
 	});
@@ -107,7 +107,7 @@ describe('createMedico', () => {
 
 		await create(mockRequest as any, mockReply as any);
 
-		expect(verifyContact).toHaveBeenCalledWith('123456789', 'medicos');
+		expect(verifyContact).toHaveBeenCalledWith(mockRequest.body.contacto, 'medicos');
 		expect(mockReply.status).toHaveBeenCalledWith(409);
 		expect(mockReply.send).toHaveBeenCalledWith({ err: 'Contacto ja cadastrado' });
 	});

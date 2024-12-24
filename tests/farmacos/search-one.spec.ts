@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { searchOne } from '../../src/http/controllers/medicos/search-one';
 import { prisma } from '../../src/lib/prisma';
+import { searchOne } from '../../src/http/controllers/farmacos/search-one';
 import { randomUUID } from 'crypto';
 
 vi.mock('../../src/lib/prisma', () => ({
 	prisma: {
-		medicos: {
+		farmacos: {
 			findUnique: vi.fn(),
 		},
 	},
@@ -21,32 +21,26 @@ describe('searchOne', () => {
 		send: vi.fn(),
 	};
 
-	it('should return medico data', async () => {
-		vi.mocked(prisma.medicos.findUnique).mockResolvedValue({
+	it('should return farmaco data', async () => {
+		vi.mocked(prisma.farmacos.findUnique).mockResolvedValue({
 			id: mockRequest.params.id,
-			nome: 'Medico 1',
-			contacto: null,
-			morada: null,
-			numero_empregado: 1,
+			nome: 'paracetamol',
 		});
 
 		await searchOne(mockRequest as any, mockReply as any);
 
 		expect(mockReply.send).toHaveBeenCalledWith({
 			id: mockRequest.params.id,
-			nome: 'Medico 1',
-			contacto: null,
-			morada: null,
-			numero_empregado: 1,
-        });
+			nome: 'paracetamol',
+		});
 	});
 
-	it('should return 404 error if medico not found', async () => {
-		vi.mocked(prisma.medicos.findUnique).mockResolvedValue(null);
-
+	it('should return 404 if farmaco not found', async () => {
+        vi.mocked(prisma.farmacos.findUnique).mockResolvedValue(null);
+        
 		await searchOne(mockRequest as any, mockReply as any);
-
+        
 		expect(mockReply.status).toHaveBeenCalledWith(404);
-		expect(mockReply.send).toHaveBeenCalledWith({ err: 'Medico nao encontrado' });
+		expect(mockReply.send).toHaveBeenCalledWith({ err: 'Fármaco nao encontrado' });
 	});
 });

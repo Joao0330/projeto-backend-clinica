@@ -30,7 +30,7 @@ describe('loginUser', () => {
 		vi.mocked(prisma.user.findUnique).mockResolvedValue({
 			id: '1',
 			nome: 'test',
-			email: 'test@example.com',
+			email: mockRequest.body.email,
 			password: 'hashed_password',
 			contacto: '123456789',
 			morada: 'rua test',
@@ -47,9 +47,9 @@ describe('loginUser', () => {
 		await loginUser(mockRequest as any, mockReply as any);
 
 		expect(prisma.user.findUnique).toHaveBeenCalledWith({
-			where: { email: 'test@example.com' },
+			where: { email: mockRequest.body.email },
 		});
-		expect(compare).toHaveBeenCalledWith('correct_password', 'hashed_password');
+		expect(compare).toHaveBeenCalledWith(mockRequest.body.password, 'hashed_password');
 		expect(mockReply.jwtSign).toHaveBeenCalledWith({
 			id: '1',
 			role: 'UTENTE',

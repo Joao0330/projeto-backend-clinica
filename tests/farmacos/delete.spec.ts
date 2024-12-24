@@ -1,17 +1,17 @@
 import { describe, expect, it, vi } from 'vitest';
-import { deletePaciente } from '../../src/http/controllers/pacientes/delete';
 import { prisma } from '../../src/lib/prisma';
+import { deleteFarmaco } from '../../src/http/controllers/farmacos/delete';
 import { randomUUID } from 'crypto';
 
 vi.mock('../../src/lib/prisma', () => ({
 	prisma: {
-		pacientes: {
+		farmacos: {
 			delete: vi.fn(),
 		},
 	},
 }));
 
-describe('deletePaciente', () => {
+describe('deleteFarmaco', () => {
 	const mockRequest = {
 		params: { id: randomUUID() },
 	};
@@ -21,16 +21,15 @@ describe('deletePaciente', () => {
 		send: vi.fn(),
 	};
 
-	it('should delete a paciente', async () => {
-		vi.mocked(prisma.pacientes.delete).mockResolvedValue({
+	it('should delete a farmaco', async () => {
+		vi.mocked(prisma.farmacos.delete).mockResolvedValue({
 			id: mockRequest.params.id,
 			nome: null,
-			contacto: null,
-			morada: null,
 		});
-		await deletePaciente(mockRequest as any, mockReply as any);
 
-		expect(prisma.pacientes.delete).toHaveBeenCalledWith({
+		await deleteFarmaco(mockRequest as any, mockReply as any);
+
+		expect(prisma.farmacos.delete).toHaveBeenCalledWith({
 			where: { id: mockRequest.params.id },
 		});
 		expect(mockReply.status).toHaveBeenCalledWith(204);
