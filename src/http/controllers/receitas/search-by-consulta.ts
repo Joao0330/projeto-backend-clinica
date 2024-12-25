@@ -17,7 +17,7 @@ export async function searchByConsulta(request: FastifyRequest<{ Params: receita
 		});
 
 		if (receitas.length === 0) {
-			return reply.status(404).send({ error: 'Nenhuma receita encontrada para esta consulta.' });
+			return reply.status(404).send({ err: 'Nenhuma receita encontrada para esta consulta.' });
 		}
 
 		reply.send(receitas);
