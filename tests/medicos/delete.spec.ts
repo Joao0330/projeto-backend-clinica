@@ -24,11 +24,7 @@ describe('deleteMedico', () => {
 	it('should delete a medico', async () => {
 		vi.mocked(prisma.medicos.delete).mockResolvedValue({
 			id: mockRequest.params.id,
-			nome: null,
-			contacto: null,
-			morada: null,
-			numero_empregado: 1,
-		});
+		} as any);
 
 		await deleteMedico(mockRequest as any, mockReply as any);
 

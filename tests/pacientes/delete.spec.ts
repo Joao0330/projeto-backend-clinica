@@ -24,10 +24,7 @@ describe('deletePaciente', () => {
 	it('should delete a paciente', async () => {
 		vi.mocked(prisma.pacientes.delete).mockResolvedValue({
 			id: mockRequest.params.id,
-			nome: null,
-			contacto: null,
-			morada: null,
-		});
+		} as any);
 		await deletePaciente(mockRequest as any, mockReply as any);
 
 		expect(prisma.pacientes.delete).toHaveBeenCalledWith({

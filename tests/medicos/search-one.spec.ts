@@ -25,19 +25,13 @@ describe('searchOne', () => {
 		vi.mocked(prisma.medicos.findUnique).mockResolvedValue({
 			id: mockRequest.params.id,
 			nome: 'Medico 1',
-			contacto: null,
-			morada: null,
-			numero_empregado: 1,
-		});
+		} as any);
 
 		await searchOne(mockRequest as any, mockReply as any);
 
 		expect(mockReply.send).toHaveBeenCalledWith({
 			id: mockRequest.params.id,
 			nome: 'Medico 1',
-			contacto: null,
-			morada: null,
-			numero_empregado: 1,
         });
 	});
 

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { verifyUserRole } from '../../middlewares/verify-user-role';
 import { verifyJwt } from '../../middlewares/verify-jwt';
-import { searchMany } from './searchMany';
+import { searchMany } from './search-many';
 import { create } from './create';
 import { ConsultaParams } from './consultas.types';
 import { update } from './update';

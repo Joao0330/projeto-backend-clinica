@@ -23,9 +23,8 @@ describe('deleteFarmaco', () => {
 
 	it('should delete a farmaco', async () => {
 		vi.mocked(prisma.farmacos.delete).mockResolvedValue({
-			id: mockRequest.params.id,
-			nome: null,
-		});
+			id: mockRequest.params.id,		
+		} as any);
 
 		await deleteFarmaco(mockRequest as any, mockReply as any);
 
