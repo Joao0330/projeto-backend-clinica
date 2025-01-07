@@ -1,0 +1,26 @@
+@use '../../abstracts/' as *;
+
+.hero{
+    height: 100vh;
+    background-image: url("src/assets/hero-bg.png");
+    background-size: cover;
+
+    &__wrapper{
+        display: flex;
+        align-items: center;
+        height: 100vh;
+    }
+
+    &__content{
+        width: 50%;
+        
+        h2{
+            color: $color-text-light;
+        }
+
+        p{
+            margin: 2rem 0;
+            color: $color-text-light
+        }
+    }
+}

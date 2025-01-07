@@ -1,0 +1,13 @@
+@mixin breakpointDesktop($break: 0) {
+	@media (max-width: $break) {
+		@content;
+	}
+}
+
+/* @include breakpointDesktop(991px) {
+	width: 100%;
+}
+
+@include breakpointMobile(991px) {
+    width: 100%;
+} */
