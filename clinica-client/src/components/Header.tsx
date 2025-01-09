@@ -29,8 +29,15 @@ export const Header = () => {
 						</nav>
 
 						<div className='navbar__auth'>
-							<FaRegUser />
-							<a href='#'>login</a>
+							<div>
+								<FaRegUser />
+								<a href='#'>login</a>
+							</div>
+
+							<div>
+								<FaRegUser />
+								<a href='#'>registo</a>
+							</div>
 						</div>
 					</div>
 				</div>

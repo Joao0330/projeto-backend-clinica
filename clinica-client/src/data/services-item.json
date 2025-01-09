@@ -1,0 +1,29 @@
+[
+	{
+		"id": 1,
+		"icon": "LiaNotesMedicalSolid",
+		"title": "Consultas",
+		"content": "Marque as suas consultas de forma autónoma, ou se preferir, com a ajuda de um especialista."
+	},
+
+	{
+		"id": 2,
+		"icon": "LiaBriefcaseMedicalSolid",
+		"title": "Especialidades",
+		"content": "Na nossa clinica existem médicos altamente especializados em diversas especialidades."
+	},
+
+	{
+		"id": 3,
+		"icon": "GiMedicines",
+		"title": "Receitas",
+		"content": "Com as nossas consultas poderá obter receitas de diversos fármacos prescritos sem transtornos adicionais."
+	},
+
+	{
+		"id": 4,
+		"icon": "MdOutlineSupportAgent",
+		"title": "Suporte",
+		"content": "Possuimos uma equipa de técnicos especializados que estarão sempre disponiveis para lhe ajudar."
+	}
+]

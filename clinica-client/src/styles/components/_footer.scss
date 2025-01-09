@@ -1,0 +1,12 @@
+@use "../abstracts/" as *;
+
+.footer{
+    padding: 2rem;
+    text-align: center;
+    background: $color-secondary;
+    color: $color-text-light;
+
+    strong{
+        margin: 0 0.5rem;
+    }
+}
