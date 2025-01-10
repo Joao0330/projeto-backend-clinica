@@ -10,8 +10,11 @@ import { farmacosRoutes } from './http/controllers/farmacos/routes';
 import { receitasRoutes } from './http/controllers/receitas/routes';
 import { medicoEspecialidadesRoutes } from './http/controllers/medico-especialidades/routes';
 import { userRoutes } from './http/controllers/users/routes';
+import fastifyCors from '@fastify/cors';
 
 export const app = fastify();
+
+app.register(fastifyCors, {});
 
 app.register(fastifyJwt, {
 	secret: env.JWT_SECRET,

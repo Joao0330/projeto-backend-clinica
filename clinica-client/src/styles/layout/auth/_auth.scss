@@ -1,0 +1,83 @@
+@use '../../abstracts/' as *;
+
+.auth {
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(171deg, rgba(231, 250, 242, 1) 12%, rgba(145, 235, 200, 1) 86%, rgba(98, 210, 162, 1) 100%);
+
+	&__box {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		width: 400px;
+		gap: 1rem;
+		padding: 2rem;
+		background: $color-primary-light;
+		box-shadow: 0 10px 10px rgba(0, 0, 0, 0.247);
+
+		div:nth-child(1) {
+			position: absolute;
+			top: 3%;
+			left: 3%;
+			padding: 0.5rem;
+			border-radius: 50%;
+			transition: 0.3s;
+			cursor: pointer;
+
+			&:hover {
+				background: $color-primary;
+			}
+
+			svg {
+				font-size: 1.8rem;
+				transform: rotate(180deg);
+				cursor: pointer;
+			}
+		}
+
+		div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+
+			svg {
+				font-size: 3rem;
+				color: $color-secondary;
+			}
+
+			h2 {
+				color: $color-text-dark;
+				font-weight: 500;
+				font-size: 2rem;
+			}
+		}
+
+		p {
+			color: $color-text-dark;
+			font-size: 0.95rem;
+		}
+
+		input {
+			outline: none;
+			padding: 0.5rem;
+			border: 1px solid $color-primary;
+			border-radius: 8px;
+		}
+
+		small {
+			text-align: center;
+
+			a {
+				margin-left: 0.5rem;
+				color: $color-secondary;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}

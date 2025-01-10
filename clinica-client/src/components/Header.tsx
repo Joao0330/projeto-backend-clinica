@@ -1,5 +1,6 @@
 import { FaRegUser } from 'react-icons/fa';
 import { FaHandHoldingMedical } from 'react-icons/fa6';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
 	return (
@@ -31,12 +32,12 @@ export const Header = () => {
 						<div className='navbar__auth'>
 							<div>
 								<FaRegUser />
-								<a href='#'>login</a>
+								<Link to='/login'>login</Link>
 							</div>
 
 							<div>
 								<FaRegUser />
-								<a href='#'>registo</a>
+								<Link to="/register">registo</Link>
 							</div>
 						</div>
 					</div>

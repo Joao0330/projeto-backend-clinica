@@ -1,0 +1,15 @@
+@use "../../abstracts/" as *;
+
+.auth-btn{
+    background: $color-secondary;
+    color: $color-text-light;
+    padding: 0.6rem;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover{
+        background: $color-primary;
+        color: $color-secondary;
+    }
+}
