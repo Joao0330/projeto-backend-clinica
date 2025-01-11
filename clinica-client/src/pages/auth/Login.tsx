@@ -15,7 +15,11 @@ const loginFormSchema = z.object({
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export const Login = () => {
-	const { register, handleSubmit } = useForm<LoginFormData>({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginFormData>({
 		resolver: zodResolver(loginFormSchema),
 	});
 
@@ -42,8 +46,18 @@ export const Login = () => {
 						<p>Faça login para entrar na sua conta</p>
 
 						<input type='email' placeholder='Email' aria-label='Email' {...register('email')} required />
+						{errors.email && (
+							<div>
+								<p>Email inválido</p>
+							</div>
+						)}
 
 						<input type='password' placeholder='Password' aria-label='password' {...register('password')} required />
+						{errors.password && (
+							<div>
+								<p>A password deve ter no mínimo 6 caracteres</p>
+							</div>
+						)}
 
 						<button className='auth-btn' type='submit'>
 							Entrar

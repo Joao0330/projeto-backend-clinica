@@ -7,6 +7,7 @@ interface AuthContextData {
 	isLoggedIn: boolean;
 	user: User | undefined;
 	login: (email: string, password: string) => Promise<void>;
+	authRegister: (nome: string, email: string, password: string, contacto?: string, morada?: string) => Promise<void>;
 	logout: () => Promise<void>;
 }
 
@@ -38,12 +39,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				setToken(data.token);
 				localStorage.setItem(storageKey, data.token);
 
-                alert('Logado com sucesso');
-                console.log(token)
+				alert('Logado com sucesso');
+				/* console.log(token); */
 			}
 		} catch (err) {
 			console.error(err);
 			alert('Erro ao logar');
+		}
+	};
+
+	const authRegister = async (nome: string, email: string, password: string, contacto?: string, morada?: string) => {
+		try {
+			const { data } = await api.post('/register', { nome, contacto, morada, email, password });
+
+			if (data) {
+				alert('Registado com sucesso');
+			}
+		} catch (err) {
+			console.error(err);
+			alert('Erro ao fazer o registo');
 		}
 	};
 
@@ -61,6 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				user,
 				isLoggedIn: !!token,
 				login,
+				authRegister,
 				logout,
 			}}
 		>
