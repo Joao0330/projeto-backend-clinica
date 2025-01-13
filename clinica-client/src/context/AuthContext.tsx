@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { User } from '../models/user';
 import { api } from '../lib/axios';
 
@@ -39,8 +39,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				setToken(data.token);
 				localStorage.setItem(storageKey, data.token);
 
+				api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+
+				const userResponse = await api.get('/me');
+				setUser(userResponse.data);
+
 				alert('Logado com sucesso');
-				/* console.log(token); */
 			}
 		} catch (err) {
 			console.error(err);
@@ -68,6 +72,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		setUser(undefined);
 		setToken(undefined);
 	}
+
+	useEffect(() => {
+		const initializeAuth = async () => {
+			if (token) {
+				try {
+					api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+					const { data } = await api.get('/me');
+					setUser(data);
+				} catch (err) {
+					console.error('Erro ao inicializar autenticação:', err);
+					logout();
+				}
+			}
+		};
+
+		initializeAuth();
+	}, [token]);
 
 	return (
 		<AuthContext.Provider

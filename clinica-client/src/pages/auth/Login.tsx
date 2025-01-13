@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHandHoldingMedical } from 'react-icons/fa6';
 import { IoExitOutline } from 'react-icons/io5';
 
@@ -24,9 +24,11 @@ export const Login = () => {
 	});
 
 	const { login } = useAuth();
+	const navigate = useNavigate();
 
 	async function handleLogin({ email, password }: LoginFormData) {
 		await login(email, password);
+		navigate('/dashboard');
 	}
 
 	return (
@@ -34,9 +36,9 @@ export const Login = () => {
 			<div className='container'>
 				<div className='auth__wrapper'>
 					<form className='auth__box' onSubmit={handleSubmit(handleLogin)}>
-						<div>
+						<Link to='/'>
 							<IoExitOutline />
-						</div>
+						</Link>
 
 						<div>
 							<FaHandHoldingMedical />

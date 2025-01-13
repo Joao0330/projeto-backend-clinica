@@ -2,7 +2,7 @@ import aboutImg from '../../assets/about-img.jpg';
 
 export const About = () => {
 	return (
-		<section className='about'>
+		<section className='about' id='about'>
 			<div className='container'>
 				<div className='about__wrapper'>
 					<img src={aboutImg} alt='Imagem de uma médica' className='img-fluid' />

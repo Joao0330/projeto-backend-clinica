@@ -36,9 +36,9 @@ export const Register = () => {
 			<div className='container'>
 				<div className='auth__wrapper'>
 					<form className='auth__box' onSubmit={handleSubmit(handleRegister)}>
-						<div>
+						<Link to='/'>
 							<IoExitOutline />
-						</div>
+						</Link>
 
 						<div>
 							<FaHandHoldingMedical />

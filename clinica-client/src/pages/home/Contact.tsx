@@ -3,7 +3,7 @@ import { MdOutlineEmail } from 'react-icons/md';
 
 export const Contact = () => {
 	return (
-		<section className='contact'>
+		<section className='contact' id="contact">
 			<div className='container'>
 				<div className='contact__wrapper'>
 					<div className='contact__title'>
