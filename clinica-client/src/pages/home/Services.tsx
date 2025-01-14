@@ -1,7 +1,7 @@
 import { LiaNotesMedicalSolid, LiaBriefcaseMedicalSolid } from 'react-icons/lia';
 import { GiMedicines } from 'react-icons/gi';
 import { MdOutlineSupportAgent } from 'react-icons/md';
-import services from '../../data/services-item.json';
+import services from '../../data/home/services-item.json';
 import { ServicesItem } from '../../components/home/ServicesItem';
 
 const iconsMap: Record<string, React.ComponentType> = {

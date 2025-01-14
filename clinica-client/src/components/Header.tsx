@@ -1,8 +1,11 @@
-import { FaRegUser } from 'react-icons/fa';
 import { FaHandHoldingMedical } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { AuthArea } from './AuthArea';
 
 export const Header = () => {
+	const { isLoggedIn } = useAuth();
+
 	return (
 		<header>
 			<div className='navbar'>
@@ -16,29 +19,35 @@ export const Header = () => {
 						<nav>
 							<ul className='navbar__menu'>
 								<li>
-									<a href='#'>Inicio</a>
+									<Link to='/'>Inicio</Link>
 								</li>
 
 								<li>
-									<a href='#about'>Sobre nós</a>
+									<Link
+										to={{
+											pathname: '/',
+											hash: '#about',
+										}}
+									>
+										Sobre nós
+									</Link>
 								</li>
 
 								<li>
-									<a href='#contact'>Contacte-nos</a>
+									<Link
+										to={{
+											pathname: '/',
+											hash: '#contact',
+										}}
+									>
+										Contacte-nos
+									</Link>
 								</li>
 							</ul>
 						</nav>
 
 						<div className='navbar__auth'>
-							<div>
-								<FaRegUser />
-								<Link to='/login'>login</Link>
-							</div>
-
-							<div>
-								<FaRegUser />
-								<Link to="/register">registo</Link>
-							</div>
+							<AuthArea state={isLoggedIn ? 'loggedIn' : 'notLoggedIn'} />
 						</div>
 					</div>
 				</div>

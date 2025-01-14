@@ -27,8 +27,11 @@ export const Login = () => {
 	const navigate = useNavigate();
 
 	async function handleLogin({ email, password }: LoginFormData) {
-		await login(email, password);
-		navigate('/dashboard');
+		const tryLogin = await login(email, password);
+		
+		if (tryLogin) {
+			navigate('/dashboard');
+		}
 	}
 
 	return (

@@ -6,7 +6,7 @@ import { api } from '../lib/axios';
 interface AuthContextData {
 	isLoggedIn: boolean;
 	user: User | undefined;
-	login: (email: string, password: string) => Promise<void>;
+	login: (email: string, password: string) => Promise<boolean>;
 	authRegister: (nome: string, email: string, password: string, contacto?: string, morada?: string) => Promise<void>;
 	logout: () => Promise<void>;
 }
@@ -45,11 +45,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				setUser(userResponse.data);
 
 				alert('Logado com sucesso');
+				return true;
 			}
 		} catch (err) {
 			console.error(err);
 			alert('Erro ao logar');
 		}
+		return false;
 	};
 
 	const authRegister = async (nome: string, email: string, password: string, contacto?: string, morada?: string) => {
@@ -66,7 +68,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	};
 
 	async function logout() {
-		await api.post('/logout');
 		localStorage.removeItem(storageKey);
 
 		setUser(undefined);

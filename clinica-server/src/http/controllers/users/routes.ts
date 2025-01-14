@@ -5,7 +5,6 @@ import { getCurrentUser } from './getMe';
 import { verifyJwt } from '../../middlewares/verify-jwt';
 
 export async function userRoutes(app: FastifyInstance) {
-
 	app.post('/register', registerUser);
 
 	app.post('/login', loginUser);
