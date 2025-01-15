@@ -3,6 +3,7 @@ import { AppLayout } from './pages/_layouts/AppLayout';
 import { HomePage } from './pages/home';
 import { Auth } from './pages/auth';
 import { Dashboard } from './pages/dashboard';
+import { Consultas } from './pages/consultas';
 
 export const router = createBrowserRouter([
 	{
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
 		children: [
 			{ path: '/', element: <HomePage /> },
 			{ path: '/dashboard', element: <Dashboard /> },
+			{ path: '/consultas', element: <Consultas /> },
 		],
 	},
 	{

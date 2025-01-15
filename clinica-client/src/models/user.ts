@@ -1,3 +1,6 @@
+import { medicos } from './medicos';
+import { pacientes } from './pacientes';
+
 export interface User {
 	id: string;
 	nome?: string | null;
@@ -7,4 +10,6 @@ export interface User {
 	medicoId?: string | null;
 	createdAt: Date;
 	updatedAt: Date;
+	medico: medicos;
+	paciente: pacientes;
 }
