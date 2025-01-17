@@ -1,0 +1,56 @@
+@use '../../abstracts/' as *;
+
+.consultas {
+	height: 100vh;
+	padding-top: 8rem;
+	background: #cdf5e3;
+	color: $color-text-dark;
+
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 5rem;
+	}
+
+	&__title {
+		background: $color-primary-light;
+		padding: 1rem;
+		border-radius: 20px;
+		box-shadow: 0 0 13px 1px rgba(0, 0, 0, 0.247);
+
+		h2 {
+			font-size: 2rem;
+			font-weight: 500;
+			color: $color-secondary;
+			margin-bottom: 1.5rem;
+		}
+	}
+
+	&__content {
+		margin: 0 auto;
+
+		table {
+			background: $color-primary-light;
+			border-collapse: collapse;
+			border-radius: 10px;
+			overflow: hidden;
+            box-shadow: 0 0 13px 1px rgba(0, 0, 0, 0.247);
+
+			tr {
+				th {
+					padding: 1rem;
+					font-weight: 500;
+					color: $color-secondary;
+				}
+			}
+
+            tbody{
+                td{
+                    padding: 0.3rem;
+					text-align: center;
+                    border: 1px solid $color-secondary;
+                }
+            }
+		}
+	}
+}

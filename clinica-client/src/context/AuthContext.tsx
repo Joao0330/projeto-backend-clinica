@@ -39,8 +39,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 				setToken(data.token);
 				localStorage.setItem(storageKey, data.token);
 
-				api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-
 				const userResponse = await api.get('/me');
 				setUser(userResponse.data);
 

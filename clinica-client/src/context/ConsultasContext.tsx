@@ -6,6 +6,7 @@ import { api } from '../lib/axios';
 interface ConsultasContextData {
 	consultas: consultas[];
 	getConsultas: () => Promise<void>;
+	createConsultas: () => Promise<void>;
 }
 
 interface ConsultasProviderProps {
@@ -26,11 +27,22 @@ export function ConsultasProvider({ children }: ConsultasProviderProps) {
 		}
 	};
 
+	const createConsultas = async () => {
+		try {
+			const { data } = await api.post("/consultas");
+			setConsultas((prev) => [...prev, data]);
+
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<ConsultasContext.Provider
 			value={{
 				consultas,
 				getConsultas,
+				createConsultas,
 			}}
 		>
 			{children}

@@ -9,8 +9,9 @@ export const AuthArea = ({ state }: { state: string }) => {
 
 	async function handleLogout() {
 		await logout();
-
 		navigate('/');
+
+		window.location.reload();
 	}
 
 	return (

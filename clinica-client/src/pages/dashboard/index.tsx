@@ -1,21 +1,14 @@
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useEffect } from 'react';
 import dashboardCardsContent from '../../data/dashboard/dashboard-cards.json';
 import { DashboardCards } from '../../components/dashboard/DashboardCards';
+import { useIsLoggedIn } from '../../hooks/useIsLoggedIn';
 
 export const Dashboard = () => {
 	const { isLoggedIn, user } = useAuth();
 	const role = user?.role;
 	const cards = role !== undefined ? dashboardCardsContent[role] : [];
 
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate('/login');
-		}
-	});
+	useIsLoggedIn(isLoggedIn);
 
 	return (
 		<section className='dashboard'>
@@ -26,7 +19,7 @@ export const Dashboard = () => {
 							<h2>
 								Bem-vindo <strong>{user?.nome}</strong> à área de utente
 							</h2>
-							<p>No seu painel de controlo, pode visualizar e gerir os seus dados pessoais, as suas consultas e os seus tratamentos.</p>
+							<p>No seu painel de controlo, pode visualizar e gerir os seus dados pessoais, as suas consultas e muito mais.</p>
 						</div>
 
 						<div className='dashboard__content-cards'>
