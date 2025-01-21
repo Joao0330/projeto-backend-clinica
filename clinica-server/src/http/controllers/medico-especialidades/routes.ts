@@ -9,7 +9,7 @@ import { deleteMedicoEspecialidade } from './delete';
 export async function medicoEspecialidadesRoutes(app: FastifyInstance) {
 	app.addHook('onRequest', verifyJwt);
 
-	app.get<{ Params: medicoEspecialidadesParams }>('/medicos-especialidades/:id_medico', { onRequest: [verifyUserRole('ADMIN')] }, searchByMedico);
+	app.get<{ Params: medicoEspecialidadesParams }>('/medicos-especialidades/:id_medico', { onRequest: [verifyUserRole('ADMIN', "UTENTE", "MEDICO")] }, searchByMedico);
 
 	app.post('/medicos-especialidades', { onRequest: [verifyUserRole('ADMIN')] }, create);
 

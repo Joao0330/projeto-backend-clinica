@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import { useConsultas } from '../../context/ConsultasContext';
 import { useIsLoggedIn } from '../../hooks/useIsLoggedIn';
-import { useAuth } from '../../context/AuthContext';
 import { ConsultasTable } from '../../components/consultas/ConsultasTable';
+import { Link } from 'react-router-dom';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { useAuth } from '../../context/AuthContext';
 
 export const Consultas = () => {
 	const { consultas, getConsultas } = useConsultas();
-	const { isLoggedIn } = useAuth();
+	const { user } = useAuth();
 
-	useIsLoggedIn(isLoggedIn);
+	useIsLoggedIn();
 
 	useEffect(() => {
 		getConsultas();
@@ -26,6 +28,17 @@ export const Consultas = () => {
 					</div>
 
 					<div className='consultas__content'>
+
+						{user?.role === "MEDICO" ? (null) : (
+
+						<div>
+							<Link to='/consultas/create'>
+								<IoIosAddCircleOutline />
+								<span>Marcar Consulta</span>
+							</Link>
+						</div>
+						)}
+
 						<ConsultasTable />
 					</div>
 				</div>

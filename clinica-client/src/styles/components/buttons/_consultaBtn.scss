@@ -1,0 +1,17 @@
+@use "../../abstracts/" as *;
+
+.consulta-btn{
+    background: none;
+    border: 1px solid $color-secondary;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    width: 120px;
+    color: $color-secondary;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover{
+        background: $color-secondary;
+        color: $color-text-light;
+    }
+}

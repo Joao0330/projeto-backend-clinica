@@ -4,11 +4,11 @@ import { DashboardCards } from '../../components/dashboard/DashboardCards';
 import { useIsLoggedIn } from '../../hooks/useIsLoggedIn';
 
 export const Dashboard = () => {
-	const { isLoggedIn, user } = useAuth();
+	const { user } = useAuth();
 	const role = user?.role;
 	const cards = role !== undefined ? dashboardCardsContent[role] : [];
 
-	useIsLoggedIn(isLoggedIn);
+	useIsLoggedIn();
 
 	return (
 		<section className='dashboard'>

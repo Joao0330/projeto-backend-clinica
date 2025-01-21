@@ -1,0 +1,72 @@
+@use '../../abstracts/' as *;
+
+.consultasForm {
+	height: 100vh;
+	padding-top: 6rem;
+	background: #cdf5e3;
+
+	&__top {
+		display: flex;
+        align-items: center;
+		gap: 3rem;
+		background: $color-primary-light;
+		padding: 1rem;
+		border-radius: 10px;
+		box-shadow: 0 0 13px 1px rgba(0, 0, 0, 0.247);
+
+        a{
+            display: flex;
+            align-items: center;
+            /* border: 1px solid $color-secondary; */
+            border-radius: 50%;
+            padding: 0.5rem;
+            color: $color-secondary;
+            font-size: 1.3rem;
+            transition: 0.3s;
+
+            &:hover{
+                background: $color-secondary;
+                color: $color-text-light;
+            }
+        }
+	}
+
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4rem;
+
+		h2 {
+			font-size: 2rem;
+			font-weight: 500;
+			align-self: flex-start;
+			color: $color-secondary;
+		}
+
+		form {
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			background: $color-primary-light;
+			padding: 2rem;
+			border-radius: 15px;
+			box-shadow: 0 0 13px 1px rgba(0, 0, 0, 0.247);
+
+			div {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			select,
+			input {
+				padding: 0.5rem;
+				border-radius: 5px;
+				border: 1px solid $color-secondary;
+				cursor: pointer;
+			}
+		}
+	}
+}

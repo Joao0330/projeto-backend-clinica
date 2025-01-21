@@ -11,7 +11,7 @@ import { deletePaciente } from './delete';
 export async function pacientesRoutes(app: FastifyInstance) {
 	app.addHook('onRequest', verifyJwt);
 
-	app.get('/pacientes', { onRequest: [verifyUserRole('ADMIN')] }, searchMany);
+	app.get('/pacientes', { onRequest: [verifyUserRole('ADMIN', "UTENTE", "MEDICO")] }, searchMany);
 
 	app.get<{ Params: pacientesParams }>('/pacientes/:id', { onRequest: [verifyUserRole('MEDICO')] }, searchOne);
 
