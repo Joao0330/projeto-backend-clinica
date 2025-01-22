@@ -7,10 +7,10 @@ export const MedicoAction = ({ action }: { action: string }) => {
 	useIsLoggedIn();
 
 	return (
-		<section className='consultasForm'>
+		<section className='utilForm'>
 			<div className='container'>
-				<div className='consultasForm__wrapper'>
-					<div className='consultasForm__top'>
+				<div className='utilForm__wrapper'>
+					<div className='utilForm__top'>
 						<Link to='/medicos'>
 							<IoArrowBackOutline />
 						</Link>

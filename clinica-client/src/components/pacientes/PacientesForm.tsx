@@ -1,35 +1,35 @@
-import { useEffect, useState } from 'react';
-import { useMedicos } from '../../context/MedicosContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useFetchMedicos } from '../../hooks/useFetchMedicos';
+import { usePacientes } from '../../context/PacientesContext';
+import { useFetchPacientes } from '../../hooks/useFetchPacientes';
+import { useEffect, useState } from 'react';
 import { useIsLoggedIn } from '../../hooks/useIsLoggedIn';
 
-export const MedicosForm = ({ action }: { action: string }) => {
-	const { handleCreate, handleUpdate, handleDelete } = useMedicos();
-	const { data: medicos } = useFetchMedicos();
-	const { id_medico } = useParams<{ id_medico: string }>();
+export const PacientesForm = ({ action }: { action: string }) => {
+	const { handleCreate, handleUpdate, handleDelete } = usePacientes();
+	const { data: pacientes } = useFetchPacientes();
+	const { id_paciente } = useParams<{ id_paciente: string }>();
 
 	const [nome, setNome] = useState('');
 	const [contacto, setContacto] = useState('');
 	const [morada, setMorada] = useState('');
 	const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    
-    useIsLoggedIn();
+	const [password, setPassword] = useState('');
+
+	useIsLoggedIn();
 
 	const navigate = useNavigate();
 
-	const medico = medicos.find(c => c.id === id_medico);
+	const paciente = pacientes.find(c => c.id === id_paciente);
 
 	useEffect(() => {
-		if (medico) {
-			setNome(medico.nome ?? '');
-			setContacto(medico.contacto ?? '');
-			setMorada(medico.morada ?? '');
+		if (paciente) {
+			setNome(paciente.nome ?? '');
+			setContacto(paciente.contacto ?? '');
+			setMorada(paciente.morada ?? '');
 		}
-	}, [medico]);
+	}, [paciente]);
 
-	const updatedMedico = {
+	const updatedPaciente = {
 		nome: nome,
 		contacto: contacto,
 		morada: morada,
@@ -45,14 +45,14 @@ export const MedicosForm = ({ action }: { action: string }) => {
 				if (action === 'create') {
 					await handleCreate(nome, contacto, morada, email, password);
 
-					navigate('/medicos');
+					navigate('/pacientes');
 				} else if (action === 'update') {
-					await handleUpdate(id_medico as string, updatedMedico);
+					await handleUpdate(id_paciente as string, updatedPaciente);
 
-					navigate('/medicos');
+					navigate('/pacientes');
 				} else {
-					await handleDelete(id_medico as string);
-					navigate('/medicos');
+					await handleDelete(id_paciente as string);
+					navigate('/pacientes');
 				}
 			}}
 		>
