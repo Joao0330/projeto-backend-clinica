@@ -1,0 +1,33 @@
+@use '../abstracts/' as *;
+
+.table {
+	background: $color-primary-light;
+	border-collapse: collapse;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 0 13px 1px rgba(0, 0, 0, 0.247);
+
+	tr {
+		th {
+			padding: 1rem;
+			font-weight: 500;
+			color: $color-secondary;
+		}
+	}
+
+	tbody {
+		td {
+			padding: 0.3rem;
+			text-align: center;
+			border: 1px solid $color-secondary;
+
+			a {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: $color-secondary;
+				font-size: 1.2rem;
+			}
+		}
+	}
+}

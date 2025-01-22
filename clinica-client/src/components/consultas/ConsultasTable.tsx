@@ -15,7 +15,7 @@ export const ConsultasTable = () => {
 	};
 
 	return (
-		<table>
+		<table className='table'>
 			<thead>
 				<tr>
 					{user?.role === 'ADMIN' && <th>Número de consulta</th>}

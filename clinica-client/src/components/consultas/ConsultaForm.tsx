@@ -126,7 +126,7 @@ export const ConsultaForm = ({ action }: { action: string }) => {
 				<input type='datetime-local' id='dataFim' value={dataFim} onChange={e => setDataFim(e.target.value)} required />
 			</div>
 
-			<button type='submit' className='consulta-btn'>
+			<button type='submit' className='form-btn'>
 				{action === 'create' ? 'Criar' : action === 'update' ? 'Editar' : 'Apagar'}
 			</button>
 		</form>

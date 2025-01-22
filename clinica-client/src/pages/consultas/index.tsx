@@ -19,24 +19,22 @@ export const Consultas = () => {
 	console.log(consultas);
 
 	return (
-		<section className='consultas'>
+		<section className='utilArea'>
 			<div className='container'>
-				<div className='consultas__wrapper'>
-					<div className='consultas__title'>
+				<div className='utilArea__wrapper'>
+					<div className='utilArea__title'>
 						<h2>Consultas</h2>
 						<p>Obtenha aqui todas as informações acerca das suas consultas.</p>
 					</div>
 
-					<div className='consultas__content'>
-
-						{user?.role === "MEDICO" ? (null) : (
-
-						<div>
-							<Link to='/consultas/create'>
-								<IoIosAddCircleOutline />
-								<span>Marcar Consulta</span>
-							</Link>
-						</div>
+					<div className='utilArea__content'>
+						{user?.role === 'MEDICO' ? null : (
+							<div>
+								<Link to='/consultas/create'>
+									<IoIosAddCircleOutline />
+									<span>Marcar Consulta</span>
+								</Link>
+							</div>
 						)}
 
 						<ConsultasTable />
