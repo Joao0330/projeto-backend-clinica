@@ -49,8 +49,8 @@ describe('createConsulta', () => {
 		body: {
 			id_medico: randomUUID(),
 			id_especialidade: randomUUID(),
-			data_inicio: '2024-12-28T14:00:00.000Z',
-			data_fim: '2024-12-28T15:00:00.000Z',
+			data_inicio: '2030-12-28T14:00:00.000Z',
+			data_fim: '2030-12-28T15:00:00.000Z',
 		},
 	};
 
