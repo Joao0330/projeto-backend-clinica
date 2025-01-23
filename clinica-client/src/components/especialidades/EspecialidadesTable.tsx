@@ -10,6 +10,8 @@ export const EspecialidadesTable = () => {
 			<thead>
 				<tr>
 					<th>Designação</th>
+					<th>Editar</th>
+					<th>Apagar</th>
 				</tr>
 			</thead>
 

@@ -3,14 +3,12 @@
 		{ "id": 1, "title": "Médicos", "text": "Aceda a toda a informação sobre os médicos na nossa clínica", "url": "/medicos" },
 		{ "id": 2, "title": "Pacientes", "text": "Aceda a toda a informação sobre os pacientes na nossa clínica", "url": "/pacientes" },
 		{ "id": 3, "title": "Consultas", "text": "Aceda a toda a informação sobre as consultas na nossa clínica", "url": "/consultas" },
-		{ "id": 4, "title": "Receitas", "text": "Aceda a toda a informação sobre as receitas na nossa clínica", "url": "/receitas" },
 		{ "id": 5, "title": "Fármacos", "text": "Aceda a toda a informação sobre os fármacos na nossa clínica", "url": "/farmacos" },
 		{ "id": 6, "title": "Especialidades", "text": "Aceda a toda a informação sobre as especialidades da nossa clínica", "url": "/especialidades" }
 	],
 
 	"MEDICO": [
 		{ "id": 3, "title": "Consultas", "text": "Aceda a toda a informação sobre as consultas na nossa clínica", "url": "/consultas" },
-		{ "id": 4, "title": "Receitas", "text": "Aceda a toda a informação sobre as receitas na nossa clínica", "url": "/receitas" },
 		{ "id": 5, "title": "Fármacos", "text": "Aceda a toda a informação sobre os fármacos na nossa clínica", "url": "/farmacos" }
 	],
 
