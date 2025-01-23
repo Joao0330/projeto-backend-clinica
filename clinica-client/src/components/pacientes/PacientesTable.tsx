@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom";
-import { useFetchPacientes } from "../../hooks/useFetchPacientes";
-import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
+import { Link } from 'react-router-dom';
+import { useFetchPacientes } from '../../hooks/useFetchPacientes';
+import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 
 export const PacientesTable = () => {
-    const { data: pacientes } = useFetchPacientes();
-   
+	const { data: pacientes } = useFetchPacientes();
 
-  return (
+	return (
 		<table className='table'>
 			<thead>
 				<tr>
@@ -40,4 +39,4 @@ export const PacientesTable = () => {
 			</tbody>
 		</table>
 	);
-}
+};

@@ -9,6 +9,8 @@ import { Medicos } from './pages/medicos';
 import { MedicoAction } from './pages/medicos/MedicoAction';
 import { Pacientes } from './pages/pacientes';
 import { PacienteAction } from './pages/pacientes/PacienteAction';
+import { Farmacos } from './pages/farmacos';
+import { FarmacoAction } from './pages/farmacos/FarmacoAction';
 
 export const router = createBrowserRouter([
 	{
@@ -32,6 +34,11 @@ export const router = createBrowserRouter([
 			{ path: '/pacientes/create', element: <PacienteAction action='create' /> },
 			{ path: '/pacientes/editar/:id_paciente', element: <PacienteAction action='update' /> },
 			{ path: '/pacientes/apagar/:id_paciente', element: <PacienteAction action='delete' /> },
+
+			{ path: '/farmacos', element: <Farmacos /> },
+			{ path: '/farmacos/create', element: <FarmacoAction action='create' /> },
+			{ path: '/farmacos/editar/:id_farmaco', element: <FarmacoAction action='update' /> },
+			{ path: '/farmacos/apagar/:id_farmaco', element: <FarmacoAction action='delete' /> },
 		],
 	},
 	{
