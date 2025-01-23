@@ -1,7 +1,7 @@
 import { useConsultas } from '../../context/ConsultasContext';
 import { useFetchMedicos } from '../../hooks/useFetchMedicos';
 import { useFetchPacientes } from '../../hooks/useFetchPacientes';
-import { useFetchEspecialidades } from '../../hooks/useFetchEspecialidades';
+import { useFetchMedicoEspecialidades } from '../../hooks/useFetchMedicoEspecialidades';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useIsLoggedIn } from '../../hooks/useIsLoggedIn';
@@ -19,7 +19,7 @@ export const ConsultaForm = ({ action }: { action: string }) => {
 	const [dataFim, setDataFim] = useState('');
 	const { data: medicos } = useFetchMedicos();
 	const { data: pacientes } = useFetchPacientes();
-	const { data: especialidades, idMedico, setIdMedico, idEspecialidade, setIdEspecialidade } = useFetchEspecialidades();
+	const { data: especialidades, idMedico, setIdMedico, idEspecialidade, setIdEspecialidade } = useFetchMedicoEspecialidades();
 
 	useIsLoggedIn();
 

@@ -5,6 +5,7 @@ import { ConsultasProvider } from './context/ConsultasContext';
 import { MedicosProvider } from './context/MedicosContext';
 import { PacientesProvider } from './context/PacientesContext';
 import { FarmacosProvider } from './context/FarmacosContext';
+import { EspecialidadesProvider } from './context/EspecialidadesContext';
 
 export const App = () => {
 	return (
@@ -12,9 +13,11 @@ export const App = () => {
 			<MedicosProvider>
 				<PacientesProvider>
 					<FarmacosProvider>
-						<ConsultasProvider>
-							<RouterProvider router={router} />
-						</ConsultasProvider>
+						<EspecialidadesProvider>
+							<ConsultasProvider>
+								<RouterProvider router={router} />
+							</ConsultasProvider>
+						</EspecialidadesProvider>
 					</FarmacosProvider>
 				</PacientesProvider>
 			</MedicosProvider>

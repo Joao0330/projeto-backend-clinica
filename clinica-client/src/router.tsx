@@ -11,6 +11,8 @@ import { Pacientes } from './pages/pacientes';
 import { PacienteAction } from './pages/pacientes/PacienteAction';
 import { Farmacos } from './pages/farmacos';
 import { FarmacoAction } from './pages/farmacos/FarmacoAction';
+import { Especialidades } from './pages/especialidades';
+import { EspecialidadeAction } from './pages/especialidades/EspecialidadeAction';
 
 export const router = createBrowserRouter([
 	{
@@ -39,6 +41,11 @@ export const router = createBrowserRouter([
 			{ path: '/farmacos/create', element: <FarmacoAction action='create' /> },
 			{ path: '/farmacos/editar/:id_farmaco', element: <FarmacoAction action='update' /> },
 			{ path: '/farmacos/apagar/:id_farmaco', element: <FarmacoAction action='delete' /> },
+
+			{ path: '/especialidades', element: <Especialidades /> },
+			{ path: '/especialidades/create', element: <EspecialidadeAction action='create' /> },
+			{ path: '/especialidades/editar/:id_especialidade', element: <EspecialidadeAction action='update' /> },
+			{ path: '/especialidades/apagar/:id_especialidade', element: <EspecialidadeAction action='delete' /> },
 		],
 	},
 	{

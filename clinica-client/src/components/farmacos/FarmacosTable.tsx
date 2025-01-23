@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { useFetchFarmacos } from "../../hooks/useFetchFarmacos";
-import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
+import { Link } from 'react-router-dom';
+import { useFetchFarmacos } from '../../hooks/useFetchFarmacos';
+import { RiDeleteBin6Line, RiEdit2Line } from 'react-icons/ri';
 
 export const FarmacosTable = () => {
-    const { data: farmacos } = useFetchFarmacos();
+	const { data: farmacos } = useFetchFarmacos();
 
-  return (
+	return (
 		<table className='table'>
 			<thead>
 				<tr>
@@ -33,4 +33,4 @@ export const FarmacosTable = () => {
 			</tbody>
 		</table>
 	);
-}
+};

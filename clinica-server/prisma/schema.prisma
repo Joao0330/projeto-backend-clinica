@@ -81,7 +81,7 @@ model Consultas {
   data_fim         DateTime?
   medico           Medicos        @relation(fields: [id_medico], references: [id])
   paciente         Pacientes      @relation(fields: [id_paciente], references: [id], onDelete: Cascade)
-  especialidade    Especialidades @relation(fields: [id_especialidade], references: [id])
+  especialidade    Especialidades @relation(fields: [id_especialidade], references: [id], onDelete: Cascade)
   receita          Receita[]
 
   @@id([id_medico, id_consulta])
