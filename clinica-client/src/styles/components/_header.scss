@@ -16,6 +16,13 @@
 		padding: 0.75rem;
 
 		nav {
+			position: relative;
+			right: 0;
+			display: flex;
+			align-items: center;
+			gap: 5rem;
+			transition: 0.5s;
+
 			ul {
 				display: flex;
 				gap: 2rem;
@@ -27,6 +34,49 @@
 
 				&:hover {
 					color: $color-secondary-dark;
+				}
+			}
+
+			@include breakpointDesktop(991px) {
+				display: flex;
+				position: fixed;
+				justify-content: space-between;
+				opacity: 0;
+				top: 0;
+				right: -100%;
+				width: 0%;
+				height: 100%;
+				background: $color-secondary;
+				flex-direction: column;
+				padding: 5rem 1rem;
+				z-index: 1000;
+
+				&.active {
+					opacity: 1;
+					right: 0;
+					height: 100%;
+					width: 50%;
+				}
+
+				ul {
+					flex-direction: column;
+					gap: 2rem;
+					text-align: center;
+					border: 1px solid $color-secondary;
+					border-radius: 10px;
+					width: 100%;
+					padding: 2rem;
+				}
+
+				.navbar__auth {
+					flex-direction: column;
+					gap: 2rem;
+
+					button {
+						border: 1px solid $color-secondary;
+						background: none;
+						width: 100%;
+					}
 				}
 			}
 		}
@@ -85,6 +135,46 @@
 				font-family: 'Nunito', 'serif';
 				background: $color-secondary;
 				cursor: pointer;
+			}
+		}
+	}
+
+	&__hamburger {
+		position: absolute;
+		right: 2rem;
+		display: none;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 25px;
+		height: 20px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		z-index: 1001;
+
+		@include breakpointDesktop(991px) {
+			display: flex;
+		}
+
+		span {
+			display: block;
+			height: 3px;
+			background: $color-text-light;
+			border-radius: 2px;
+			transition: 0.3s;
+		}
+
+		&.active {
+			position: fixed;
+
+			span:nth-child(1) {
+				transform: rotate(45deg) translate(5px, 5px);
+			}
+			span:nth-child(2) {
+				opacity: 0;
+			}
+			span:nth-child(3) {
+				transform: rotate(-45deg) translate(5px, -5px);
 			}
 		}
 	}

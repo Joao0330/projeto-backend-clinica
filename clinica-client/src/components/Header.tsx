@@ -2,9 +2,15 @@ import { FaHandHoldingMedical } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AuthArea } from './AuthArea';
+import { useState } from 'react';
 
 export const Header = () => {
 	const { isLoggedIn } = useAuth();
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+	const toggleMobileMenu = () => {
+		setIsMobileMenuOpen(!isMobileMenuOpen);
+	};
 
 	return (
 		<header>
@@ -16,10 +22,12 @@ export const Header = () => {
 							<FaHandHoldingMedical />
 						</div>
 
-						<nav>
+						<nav className={`${isMobileMenuOpen ? 'active' : ''}`}>
 							<ul className='navbar__menu'>
 								<li>
-									<Link to='/'>Inicio</Link>
+									<Link to='/' onClick={() => setIsMobileMenuOpen(false)}>
+										Inicio
+									</Link>
 								</li>
 
 								<li>
@@ -28,6 +36,7 @@ export const Header = () => {
 											pathname: '/',
 											hash: '#about',
 										}}
+										onClick={() => setIsMobileMenuOpen(false)}
 									>
 										Sobre nós
 									</Link>
@@ -39,16 +48,23 @@ export const Header = () => {
 											pathname: '/',
 											hash: '#contact',
 										}}
+										onClick={() => setIsMobileMenuOpen(false)}
 									>
 										Contacte-nos
 									</Link>
 								</li>
 							</ul>
+
+							<div className='navbar__auth'>
+								<AuthArea state={isLoggedIn ? 'loggedIn' : 'notLoggedIn'} toggleMobile={toggleMobileMenu} />
+							</div>
 						</nav>
 
-						<div className='navbar__auth'>
-							<AuthArea state={isLoggedIn ? 'loggedIn' : 'notLoggedIn'} />
-						</div>
+						<button className={`navbar__hamburger ${isMobileMenuOpen ? 'active' : ''}`} onClick={toggleMobileMenu}>
+							<span></span>
+							<span></span>
+							<span></span>
+						</button>
 					</div>
 				</div>
 			</div>

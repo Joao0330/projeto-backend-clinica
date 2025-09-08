@@ -3,7 +3,7 @@ import { MdOutlineDashboard, MdLogout } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export const AuthArea = ({ state }: { state: string }) => {
+export const AuthArea = ({ state, toggleMobile }: { state: string; toggleMobile: () => void }) => {
 	const { logout } = useAuth();
 	const navigate = useNavigate();
 
@@ -32,7 +32,9 @@ export const AuthArea = ({ state }: { state: string }) => {
 				<>
 					<div>
 						<MdOutlineDashboard />
-						<Link to='/dashboard'>Área Utente</Link>
+						<Link to='/dashboard' onClick={() => toggleMobile()}>
+							Área Utente
+						</Link>
 					</div>
 
 					<div>
