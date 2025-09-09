@@ -1,5 +1,12 @@
 @use '../abstracts/' as *;
 
+.table-container {
+	@include breakpointDesktop(560px) {
+		overflow-x: auto;
+		width: 300px;
+	}
+}
+
 .table {
 	background: $color-primary-light;
 	border-collapse: collapse;

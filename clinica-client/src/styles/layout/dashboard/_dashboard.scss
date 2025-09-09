@@ -1,12 +1,11 @@
 @use '../../abstracts/' as *;
 
 .dashboard {
-	height: 120vh;
+	min-height: 100vh;
 	background: #cdf5e3;
 
 	&__wrapper {
-		height: 120vh;
-		padding-top: 7rem;
+		padding: 7rem 0;
 	}
 
 	&__content {
@@ -33,7 +32,7 @@
 				font-weight: 500;
 				margin-bottom: 1.5rem;
 
-				strong{
+				strong {
 					color: $color-secondary;
 					font-weight: 600;
 					text-transform: capitalize;
@@ -46,6 +45,13 @@
 			grid-template-columns: repeat(3, 1fr);
 			grid-template-rows: auto;
 			gap: 2rem;
+
+			@include breakpointDesktop(840px) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			@include breakpointDesktop(570px) {
+				grid-template-columns: 1fr;
+			}
 
 			div {
 				display: flex;
@@ -63,8 +69,8 @@
 					display: inline-block;
 					color: $color-secondary;
 
-					&:hover{
-						text-decoration: underline;	
+					&:hover {
+						text-decoration: underline;
 					}
 				}
 			}

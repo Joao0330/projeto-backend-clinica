@@ -15,46 +15,48 @@ export const ConsultasTable = () => {
 	};
 
 	return (
-		<table className='table'>
-			<thead>
-				<tr>
-					{user?.role === 'ADMIN' && <th>Número de consulta</th>}
-					{user?.role !== 'MEDICO' && <th>Medico</th>}
-					{user?.role !== 'UTENTE' && <th>Paciente</th>}
-					<th>Especialidade da Consulta</th>
-					<th>Data de Inicio</th>
-					<th>Data de Fim</th>
-					{user?.role === 'ADMIN' && <th>Editar</th>}
-					{user?.role === 'ADMIN' && <th>Apagar</th>}
-				</tr>
-			</thead>
-
-			<tbody>
-				{sortedConsultas.map(consulta => (
-					<tr key={consulta.id_consulta}>
-						{user?.role === 'ADMIN' && <td>{consulta.numero_consulta}</td>}
-						{user?.role !== 'MEDICO' && <td>{consulta.medico.nome}</td>}
-						{user?.role !== 'UTENTE' && <td>{consulta.paciente.nome}</td>}
-						<td>{consulta.especialidade.designacao}</td>
-						<td>{formatDate(consulta.data_inicio)}</td>
-						<td>{formatDate(consulta.data_fim)}</td>
-						{user?.role === 'ADMIN' && (
-							<td>
-								<Link to={`/consultas/editar/${consulta.id_medico}/${consulta.id_consulta}`}>
-									<RiEdit2Line />
-								</Link>
-							</td>
-						)}
-						{user?.role === 'ADMIN' && (
-							<td>
-								<Link to={`/consultas/apagar/${consulta.id_medico}/${consulta.id_consulta}`}>
-									<RiDeleteBin6Line />
-								</Link>
-							</td>
-						)}
+		<div className='table-container'>
+			<table className='table'>
+				<thead>
+					<tr>
+						{user?.role === 'ADMIN' && <th>Número de consulta</th>}
+						{user?.role !== 'MEDICO' && <th>Medico</th>}
+						{user?.role !== 'UTENTE' && <th>Paciente</th>}
+						<th>Especialidade da Consulta</th>
+						<th>Data de Inicio</th>
+						<th>Data de Fim</th>
+						{user?.role === 'ADMIN' && <th>Editar</th>}
+						{user?.role === 'ADMIN' && <th>Apagar</th>}
 					</tr>
-				))}
-			</tbody>
-		</table>
+				</thead>
+
+				<tbody>
+					{sortedConsultas.map(consulta => (
+						<tr key={consulta.id_consulta}>
+							{user?.role === 'ADMIN' && <td>{consulta.numero_consulta}</td>}
+							{user?.role !== 'MEDICO' && <td>{consulta.medico.nome}</td>}
+							{user?.role !== 'UTENTE' && <td>{consulta.paciente.nome}</td>}
+							<td>{consulta.especialidade.designacao}</td>
+							<td>{formatDate(consulta.data_inicio)}</td>
+							<td>{formatDate(consulta.data_fim)}</td>
+							{user?.role === 'ADMIN' && (
+								<td>
+									<Link to={`/consultas/editar/${consulta.id_medico}/${consulta.id_consulta}`}>
+										<RiEdit2Line />
+									</Link>
+								</td>
+							)}
+							{user?.role === 'ADMIN' && (
+								<td>
+									<Link to={`/consultas/apagar/${consulta.id_medico}/${consulta.id_consulta}`}>
+										<RiDeleteBin6Line />
+									</Link>
+								</td>
+							)}
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
 	);
 };
