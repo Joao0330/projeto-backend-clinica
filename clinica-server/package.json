@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
+		"migrate": "prisma migrate deploy",
 		"dev": "tsx watch src/server.ts",
 		"test": "vitest"
 	},
