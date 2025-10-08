@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 const storageKey = 'auth-token';
 
 export const api = axios.create({
-	baseURL: 'http://localhost:3333',
+	baseURL: 'https://projeto-backend-clinica.onrender.com',
 });
 
 api.interceptors.request.use(config => {
