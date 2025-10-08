@@ -2,7 +2,7 @@
 
 .hero {
 	height: 100vh;
-	background-image: url('hero-bg.png');
+	background-image: url('/hero-bg.png');
 	background-size: cover;
 
 	@include breakpointDesktop(991px) {
