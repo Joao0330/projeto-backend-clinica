@@ -1,12 +1,10 @@
-import aboutImg from '../../assets/about-img.jpg';
-
 export const About = () => {
 	return (
 		<section className='about' id='about'>
 			<div className='container'>
 				<div className='about__wrapper'>
-					<img src={aboutImg} alt='Imagem de uma médica' className='img-fluid' />
-                    
+					<img src='/about-img' alt='Imagem de uma médica' className='img-fluid' />
+
 					<div className='about__content'>
 						<h2>Sobre a nossa clinica</h2>
 
