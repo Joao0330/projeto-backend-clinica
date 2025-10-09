@@ -17,6 +17,10 @@
 		background: $color-primary-light;
 		box-shadow: 0 10px 10px rgba(0, 0, 0, 0.247);
 
+		@include breakpointDesktop(400px) {
+			width: 300px;
+		}
+
 		> a {
 			position: absolute;
 			top: 3%;
@@ -69,9 +73,9 @@
 			border-radius: 8px;
 		}
 
-		div>p{
+		div > p {
 			color: $color-red;
-			font-size: 0.90rem;
+			font-size: 0.9rem;
 		}
 
 		small {
